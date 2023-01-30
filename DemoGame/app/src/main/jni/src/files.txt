@@ -1,0 +1,187 @@
+Android.mk
+CMakeLists.txt
+files.txt
+data\AUTHORS
+data\emi.dat
+data\font.dat
+data\font.ttf
+data\gradient.dat
+data\icon.bmp
+data\levels.dat
+data\Makefile.am
+data\Makefile.in
+data\map.dat
+data\map_top.dat
+data\music-ending-nonfree.ogg
+data\music-ending-nonfree.ogg.xml
+data\music-game-nonfree-1.ogg
+data\music-game-nonfree-1.ogg.xml
+data\music-game-nonfree.ogg
+data\music-game-nonfree.ogg.xml
+data\sound-builder-nonfree.ogg
+data\sound-builder-nonfree.ogg.xml
+data\sound-collapse-nonfree.ogg
+data\sound-collapse-nonfree.ogg.xml
+data\sound-crack.ogg
+data\sound-crack.ogg.xml
+data\sound-death.ogg
+data\sound-death.ogg.xml
+data\sound-explode-big.ogg
+data\sound-explode-big.ogg.xml
+data\sound-explode-small.ogg
+data\sound-explode-small.ogg.xml
+data\sound-floater-enter.ogg
+data\sound-floater-enter.ogg.xml
+data\sound-found-antiice-nonfree.ogg
+data\sound-found-antiice-nonfree.ogg.xml
+data\sound-found-jump-nonfree.ogg
+data\sound-found-jump-nonfree.ogg.xml
+data\sound-ice.ogg
+data\sound-ice.ogg.xml
+data\sound-laser.ogg
+data\sound-laser.ogg.xml
+data\sound-lift-down-nonfree.ogg
+data\sound-lift-down-nonfree.ogg.xml
+data\sound-lift-up-nonfree.ogg
+data\sound-lift-up-nonfree.ogg.xml
+data\sound-spinner-nonfree.ogg
+data\sound-spinner-nonfree.ogg.xml
+data\sound-trampoline.ogg
+data\sound-trampoline.ogg.xml
+data\sound-used-antiice.ogg
+data\sound-used-antiice.ogg.xml
+data\sound-used-jump.ogg
+data\sound-used-jump.ogg.xml
+data\sound-win.ogg
+data\sound-win.ogg.xml
+data\tiles.dat
+data\tiles_reflect.dat
+data\title.dat
+Externals\SDL\begin_code.h
+Externals\SDL\close_code.h
+Externals\SDL\SDL.h
+Externals\SDL\SDL_assert.h
+Externals\SDL\SDL_atomic.h
+Externals\SDL\SDL_audio.h
+Externals\SDL\SDL_bits.h
+Externals\SDL\SDL_blendmode.h
+Externals\SDL\SDL_clipboard.h
+Externals\SDL\SDL_config.h
+Externals\SDL\SDL_config.h.cmake
+Externals\SDL\SDL_config.h.in
+Externals\SDL\SDL_config_android.h
+Externals\SDL\SDL_config_iphoneos.h
+Externals\SDL\SDL_config_macosx.h
+Externals\SDL\SDL_config_macosx.h.orig
+Externals\SDL\SDL_config_minimal.h
+Externals\SDL\SDL_config_pandora.h
+Externals\SDL\SDL_config_psp.h
+Externals\SDL\SDL_config_windows.h
+Externals\SDL\SDL_config_winrt.h
+Externals\SDL\SDL_config_wiz.h
+Externals\SDL\SDL_copying.h
+Externals\SDL\SDL_cpuinfo.h
+Externals\SDL\SDL_egl.h
+Externals\SDL\SDL_endian.h
+Externals\SDL\SDL_error.h
+Externals\SDL\SDL_events.h
+Externals\SDL\SDL_filesystem.h
+Externals\SDL\SDL_gamecontroller.h
+Externals\SDL\SDL_gesture.h
+Externals\SDL\SDL_guid.h
+Externals\SDL\SDL_haptic.h
+Externals\SDL\SDL_hidapi.h
+Externals\SDL\SDL_hints.h
+Externals\SDL\SDL_image.h
+Externals\SDL\SDL_joystick.h
+Externals\SDL\SDL_keyboard.h
+Externals\SDL\SDL_keycode.h
+Externals\SDL\SDL_loadso.h
+Externals\SDL\SDL_locale.h
+Externals\SDL\SDL_log.h
+Externals\SDL\SDL_main.h
+Externals\SDL\SDL_messagebox.h
+Externals\SDL\SDL_metal.h
+Externals\SDL\SDL_misc.h
+Externals\SDL\SDL_mixer.h
+Externals\SDL\SDL_mouse.h
+Externals\SDL\SDL_mutex.h
+Externals\SDL\SDL_name.h
+Externals\SDL\SDL_opengl.h
+Externals\SDL\SDL_opengles.h
+Externals\SDL\SDL_opengles2.h
+Externals\SDL\SDL_opengles2_gl2.h
+Externals\SDL\SDL_opengles2_gl2ext.h
+Externals\SDL\SDL_opengles2_gl2platform.h
+Externals\SDL\SDL_opengles2_khrplatform.h
+Externals\SDL\SDL_opengl_glext.h
+Externals\SDL\SDL_pixels.h
+Externals\SDL\SDL_platform.h
+Externals\SDL\SDL_power.h
+Externals\SDL\SDL_quit.h
+Externals\SDL\SDL_rect.h
+Externals\SDL\SDL_render.h
+Externals\SDL\SDL_revision.h
+Externals\SDL\SDL_rwops.h
+Externals\SDL\SDL_scancode.h
+Externals\SDL\SDL_sensor.h
+Externals\SDL\SDL_shape.h
+Externals\SDL\SDL_stdinc.h
+Externals\SDL\SDL_surface.h
+Externals\SDL\SDL_system.h
+Externals\SDL\SDL_syswm.h
+Externals\SDL\SDL_test.h
+Externals\SDL\SDL_test_assert.h
+Externals\SDL\SDL_test_common.h
+Externals\SDL\SDL_test_compare.h
+Externals\SDL\SDL_test_crc32.h
+Externals\SDL\SDL_test_font.h
+Externals\SDL\SDL_test_fuzzer.h
+Externals\SDL\SDL_test_harness.h
+Externals\SDL\SDL_test_images.h
+Externals\SDL\SDL_test_log.h
+Externals\SDL\SDL_test_md5.h
+Externals\SDL\SDL_test_memory.h
+Externals\SDL\SDL_test_random.h
+Externals\SDL\SDL_thread.h
+Externals\SDL\SDL_timer.h
+Externals\SDL\SDL_touch.h
+Externals\SDL\SDL_ttf.h
+Externals\SDL\SDL_types.h
+Externals\SDL\SDL_version.h
+Externals\SDL\SDL_video.h
+Externals\SDL\SDL_vulkan.h
+sounds\music1.mp3
+
+src\character-8.fla \
+src\config.h \
+src\danger-2.fla \
+src\dirent.h \
+src\distanse-2.fla \
+src\gfx.cpp \
+src\gfx_list.h \
+src\hex_puzzzle.cpp \
+src\i18n.cpp \
+src\i18n.h \
+src\levelData.txt \
+src\level_list.h \
+src\menu-14.fla \
+src\menus.h \
+src\name.txt \
+src\packfile.h \
+src\savestate.h \
+src\sfx.cpp \
+src\sfx.h \
+src\state.h \
+src\stop-2.fla \
+src\system-directory.c \
+src\system-directory.h \
+src\system-relative.c \
+src\system-relative.h \
+src\text.cpp \
+src\text.h \
+src\tiletypes.h \
+src\unistd.h \
+src\video.h \
+tools\bmp2dat.c \
+tools\dat2bmp.c \

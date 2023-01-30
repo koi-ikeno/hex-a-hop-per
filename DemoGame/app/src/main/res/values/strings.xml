@@ -1,0 +1,561 @@
+<resources>
+    <string name="app_name">Hex-a-Hop-Per!</string>
+<string name="hello">
+Hello world!
+</string>
+    <string name="hintbutton">hint1</string>
+    <string name="answerbutton">hint2</string>
+    <string name="closebutton">close</string>
+    <string name="impossible_game">imp game</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="info">Hex-a-Hop-Per!\n\n
+\n
+		This application is a port of "hex-a-hop" in compliance with the GPLv2 license.\n
+        \n
+        original hex-a-hop URL:\n
+        https://hexahop.sourceforge.net/
+        \n
+        \n
+		--------------------------------------------------------------------------------------------------------------------------------\n
+        \n
+●Sound FX\n
+sound-builder\n
+by gynation\n
+https://freesound.org/people/gynation/sounds/82379/\n
+CC0 license\n
+\n
+sound-collapse\n
+by Wdomino\n
+https://freesound.org/people/Wdomino/sounds/508546/\n
+CC0 license\n
+\n
+sound-found-antiice\n
+by bilkmusic\n
+https://freesound.org/people/blikmusic/sounds/353129/\n
+CC0 license\n
+\n
+sounf-found-jump\n
+"Hand Bells, High-C, Single.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org\n
+https://freesound.org/people/InspectorJ/sounds/339820/\n
+CC-BY 4.0\n
+\n
+sound-lift-up\n
+sound-lift-down\n
+sound-spinner\n
+by peridactyloptrix\n
+https://freesound.org/people/peridactyloptrix/sounds/221930/\n
+CC0\n
+			</string>
+
+    <string name="hint93part1">	 Strange Place	\n	 Plan to ride the boat up then down-left (to get the two green tiles just below the starting point)	\n
+	 Dont build any green walls.	\n
+	 You need to break the only blue tile (at the left) to make the blue walls retract.	\n\n
+	 You need to build some more green tiles with the builder before going to get the blue tile.\n</string>
+    <string name="hint93part2">	 	 Strange Place\n
+		 Start with: UR, DR, UR, D, UR, D, DR, DR, DR, DR, U, UR, DL, DL, UL, U (Note: this is not the optimal solution!)\n
+		 Then: UR, UR, UR, DR, UL, D, UL, DL, UL, UL, U, U, UR, DL, DR, DR, D, U, DR\n
+		 Then: UR, DR, D, D, U, UR, DR, DL, UL\n
+		Finally: UR, U, DR, UR, UR, DL, UR, U, DR, UR</string>
+    <string name="hint52part1">	All About Preparation	\n
+    Consider how many times to rotate each spinner before breaking all the green tiles and jumping into the centre.	\n
+    Note that you need to leave a tile two hexes up-right of the top trampoline so you can land there after trampling the left-most green wall.	\n
+    Rotate the bottom-right spinner once, then the bottom left one five times.	\n
+    Then the top-left spinner twice, and the top-right spinner once.	\n
+    Then after breaking all the initial green tiles and bouncing down-right on the trampoline you dont need to step on any more spinners (except for the final move).	\n
+    </string>
+    <string name="hint52part2">		All About Preparation\n
+    Solution (from start of level): DR, D, DR*6, UR, UR, U, U (first spinner OK)\n
+    Then: D, D, DL, UL, DL, UL, UL, U, UR, UL, DR, U, D. UR, DL, DR, UL (second spinner OK)\n
+    Then: D, DL, UL, U, UL*4, U*3, UR, UR, DR*4, U, D (first 3 spinners all OK)\n
+    Then: UR*3, DR, D (all spinners now in place!)\n
+    Then: UR, U, UL, UL, DL, UL, DL, UL, DL, UL, DL, DL, D, DR, DR (bouncing off trampoline)\n
+    Then: UR, UR, DR, UR, DR, DL, D, DR, DL, UL, DL, UL*3, UR, DR (Finished!)\n
+    </string>
+    <string name="hint88part1">Beware Feedback Loops	\n
+    Start by going down, and seeing which way the lasers go. Youll need to do something to stop the lasers going round in a circle.	\n
+    Use the builder tiles to create extra green tiles to block the lasers.	\n
+    Dont step on builder tiles with green tiles left adjacent to them, else youll end up with awkward green walls.	\n
+    Since you have to fire two lasers, youll need at least 3 extra tiles blocking the loop (since the first shot will destroy 2)	\n
+        Leave 2 green tiles from the left-hand builder and 2 green tiles from the right-hand builder to block the lasers.</string>
+    <string name="hint88part2">		Beware Feedback Loops\n
+    Step on the right-hand builder first, then the middle one, then the left one. You shouldnt create any walls.\n
+    Remember to step on the tile directly up of the left-hand builder on your way to the right-hand builder (but leave the tile to the north of that untouched!)\n
+    </string>
+    <string name="hint27part1">	Branching Pathway	\n
+    You need to go around the bottom-left twice to get the 3 blue tiles in the top-left.	\n
+    You use one of the jumps to do the section on the right-hand side.	\n
+    You use the other jump on one of the bottom-most blue tiles.	\n
+    Stepping forwards then backwards is a very important thing to do sometimes.\n
+    </string>
+    <string name="hint27part2">		Branching Pathway\n
+    Start by stepping Down-right, Down, Up.\n
+    Then go Down, Down, Down-right, Up-left, Down-right, Down, Down-left, Up-right, Down-left, Down-left.\n
+    after you jump downwards on the middle trampoline, do: Down-right, Jump, Up-left, Down-left.\n
+    </string>
+    <string name="hint25part1">	Breakthrough	\n
+    Think about how you can can destroy the two green walls.	\n
+    If you got rid of all but the topmost of the central column of ice tiles, shooting a laser upwards at the remaining ice tile would destroy both green walls.	\n
+    So how do you get rid of those awkward ice tiles?	\n
+    Shoot yellow tiles next to ice tiles to destroy them.	\n
+    If you rotate both spinners four times, the yellow tiles will be in good places where you can shoot them from the bottom.	\n
+    Rotate the top spinner four times, then the bottom spinner four times.	\n
+    You can fire yellow tiles in some directions without danger when you need to rotate spinners without breaking more green tiles (e.g. down-left from the bottom spinner)\n
+    </string>
+    <string name="hint25part2">		Breakthrough\n
+    solution starts: U, DL, UR, UL, DR, D, U (top yellow tiles are now in a good position)\n
+    Then: DR, DL, D, UL, DR, UL, DR, DL, UR, (all yellow tiles next to spinners are now in a good position)\n
+    To finish: D, D, D, D, D, DL, U, D, U, DL, U, DL, D, U\n
+    </string>
+    <string name="hint77part1">	Clearance	\n
+    You need to get to the green tiles in the top-right, but theres an awkard trampoline blocking the way.	\n
+    Before you can take the boat up there you need to destroy the trampoline and the two grey tiles beneath it.	\n
+    You need to fire the laser up-right from three different positions.	\n
+    You can shoot out the bottom of the three tiles without stepping on the spinner.\n
+    </string>
+    <string name="hint77part2">		Clearance\n
+    After rotating the spinner twice, the laser is in the right place to shoot the trampoline.\n
+    Rotating it twice more leaves it in a good place for shooting the remaining awkward tile.\n
+    In some positions, its safe to step from the spinner onto the laser and back again to make it rotate again.\n
+    Make sure you walk over enough of the green tiles while going to fire the laser after rotating twice. You just need to leave one for later.\n
+    </string>
+    <string name="hint94part1">	Commute	\n
+    Get off the raised green tiles immediately.	\n
+    Start by destroying all the normal green tiles, aiming to finish on the right-most lift.	\n
+    Then destroy all the tiles on the right (including the blue one)	\n
+    Then head to the left and take out the two green tiles to the lower-left of the left-most lift.	\n
+    Finally, destroy the blue and green tiles above the lift (make sure you leave the lift in the down position before stepping upwards)\n
+    </string>
+    <string name="hint94part2">		Commute\n
+    Move sequence: DL, DL, DL, U, UL, DL, U, DL, U, UL, DL, U, U, DR, DR, DR, DR, DR, DR, UR (takes you onto the right-most lift)\n
+    Then: UR, DR, UR, UL, DR, U, UL, DL, DL, DL (Takes you onto the second lift from the right)\n
+    Then go up-left until youre standing on the grey wall tile. Finally, go DL, UL, UR, DR, UL, U, U, D, D\n
+    </string>
+    <string name="hint40part1">	Death Trap	\n
+    Take out the five green tiles at the start first.	\n
+    Then work your way along the bottom edge from left to right, shooting upwards to destroy the upper green tiles.\n
+    </string>
+    <string name="hint40part2">		Death Trap\n
+    Move sequence: U, DL, D, DR, UR, DR, D, U, D, U, D, DR, UR\n
+    Then: DR, UR, U, D, DR, UR, U, D, U, D\n
+    Finally: DR, UR, U, D, U, D, U, D, DR, UL\n
+    </string>
+    <string name="hint41part1">	Eagerness	\n
+    If the green walls retract, you cant get off the first yellow tile.	\n
+    So, how do you stop them retracting?\n
+    </string>
+    <string name="hint41part2">		Eagerness\n
+    You need to turn one of the blue tiles green first.\n
+    But only one of them, else the blue walls will retract too soon!\n
+    Then go and shoot the blue tile you left behind.\n
+    </string>
+    <string name="hint18part1">	Ferrying	\n
+    Leave one of the 3 green tiles at the start unbroken so you can safely ride the top-most boat downwards.	\n
+    You take the boat which starts at the bottom up 3 times and down twice.	\n
+    When you take the boat upwards for the third time, you should have already broken all 10 green tiles adjacent to the trampolines so you can just bounce upwards.	\n
+    after taking the boat upwards the second time, you need to use both trampolines (and one of them twice) in order to break all 10 green tiles.\n
+    </string>
+    <string name="hint18part2">	 	Ferrying\n
+    The move sequence after riding the boat upwards for the second time is: U, UL, U, DR (onto trampoline), UL, U, UR, DR, D, UL (onto right trampoline), D (onto left trampoline, and then the boat)\n
+    </string>
+    <string name="hint96part1">	Fetch Quest	\n
+    You need to collect all the anti-ice, and finish on the spinner at the top-right.	\n
+    Go for the bottom-most anti-ice first.	\n
+    You have to shoot the tile the bottom-most anti-ice starts on after taking the anti-ice.	\n
+    Secondly, collect the left-most anti-ice.	\n
+    The right-most spinner should be rotated twice to complete the path on the right-side of the level.	\n
+    The anti-ice which starts on yellow tiles should be collected 6th and 7th. The anti-ice on the bottom-right spinner is the last one you get.\n
+    </string>
+    <string name="hint96part2">		Fetch Quest\n
+    Start with D, UL, DL, DL, DR, D, D, UL, UL, U (takes you to the bottom right spinner)\n
+    Then: U, UL, U, U, UR, DL, DR, DR, U, U, UL, UR, DR, DR (collecting the third anti-ice)\n
+    Then: U, U, U, DR, DL, UR, DR, D, DR, UR, DR (onto right-most spinner)\n
+    Notice that you can fire the right-hand yellow tile down-right without destroying anything.\n
+    More moves (continuing from before): U, D, U, UL, DL, D, D, U, DL, DL, DL, DL, D (onto left-hand yellow tile)\n
+    Then: UR, UR, UR, DR, DL, D, DR, D, U, UL, DR, UR, DR, UR (onto bottom-most ice tile)\n
+    Finally, go straight to the top-most spinner, de-icing all the icy tiles on the way.\n
+    </string>
+    <string name="hint74part1">	Finishing Strike	\n
+    You need to shoot the bottom left yellow tile to destroy the green walls.	\n
+    But you cant fire the central gun in that direction...\n
+    </string>
+    <string name="hint74part2">		Finishing Strike\n
+    Have you tried jumping whilst standing on a yellow tile?\n
+    Finish by going to the central yellow tile and jumping twice.\n
+    You need to walk around the outside loop first. Remember you dont have to destroy all the blue tiles.\n
+    </string>
+    <string name="hint79part1">	Forced Fire	\n
+    The boat is the key.	\n
+    You can get the tiles in the bottom left and leave, but youll end up firing the laser up-right four times in the process (and down once).	\n
+    Is there a way you can fire up-right four times without making the level unsolvable?\n
+    </string>
+    <string name="hint79part2">		Forced Fire\n
+    You could use the boat to absorb one of the shots.\n
+    There is a different way to use the boat which allows you to complete the level without firing at all.\n
+    </string>
+    <string name="hint65part1">	Green Honey	\n
+	If youve got this far, the top half of this level shouldnt be a problem.	\n
+	Think back to the level "Eagerness".	\n
+	Dont get rid of all the blue tiles too soon.</string>
+
+    <string name="hint65part2">		Green Honey\n
+		There should only be one green tile left when make the blue walls turn into blue tiles.\n
+		anti-ice makes ice tiles turn blue.\n
+		Grab the anti-ice then walk over the ice - this then becomes the blue tile which keeps the blue walls from retracting.</string>
+
+    <string name="hint42part1">	Gun Platform	\n
+	Note that all but one of the tiles that starts green can be shot by walking over the yellow tiles in a circle.	\n
+	Theres no need to break a lot of the blue tiles.	\n
+	The only possible way to remove the remaining green tile is to fire a laser down-right.	\n
+	So you want to use the trampoline to land on the central green tile, then step down-right.</string>
+
+    <string name="hint42part2">		Gun Platform\n
+		Complete solution starts: U, D, U, U, U, D, U, UR, UR, DL, UR, UR, DR, UL, DR, UR, D, U, D, D (onto trampoline)\n
+		Then just walk around the yellow tiles until youre done. (Go both clockwise and anti-clockwise!)</string>
+
+    <string name="hint83part1">	Hunting	\n
+	Dont break the only green tile too soon.	\n
+	You should destroy the 8 green walls attached to the initial ring of lifts before moving on. Experiment with moving between lifts.	\n
+	Try to get in a position with only the bottom-left and the top lift (of the ring of lifts) raised with Emi standing on the top one. From that position, it should be easy.</string>
+
+    <string name="hint83part2">		Hunting\n
+		Exact moves to do that from the start of the level are: Up-right, Up-right, Up, Down, Down-left, Up-right, Up, Up-Right. Then go round the 4 green walls next to you. Then get the bottom 4 walls.\n
+		You need to destroy the top lift in the ring of 6 lifts to allow a refracted laser to destroy the green tile.\n
+		Fire the left-most laser down-left.\n
+		Fire the top-most laser upwards to get a refracted laser to destroy the green tile.</string>
+
+    <string name="hint99part1">	Icy Road	\n
+	There are a lot of green tiles which can easily get left in useless positions. Think about which tiles must be broken sequentially (e.g. the loop at the bottom of the level.)</string>
+
+    <string name="hint99part2">		Icy Road\n
+		If you start with: U, U, DR, D, DL, DR, it should become obvious.\n
+		If not, the remaining moves are: UR, DR, D, DL, UL, U, UR, DR, UR, UL, U, U</string>
+
+    <string name="hint34part1">	Island	\n
+	Theres no grey tile to finish on.	\n
+	You only need to destroy green tiles.</string>
+
+    <string name="hint34part2">		Island\n
+		Blue tiles only turn green when you step off them.\n
+		You need to finish by stepping from the last green tile onto a blue one.</string>
+
+    <string name="hint97part1">	Laser Surgery	\n
+	The last move youll make will be to step upwards from the bottom-most green tile (which is initially a green wall).	\n
+	Doing so will fire the laser, so there must not be a clear loop around the 6 central ice tiles at this point, else the laser will loop back and blow you up.	\n
+	You need to fire the laser upwards at least twice.	\n
+	The penultimate time you fire the laser upwards must destroy any remaining green tiles (so you can break the bottom-most green wall before firing for the last time)	\n
+	So try leaving one green tile behind.	\n
+	Leave the one green tile in between the right-hand two ice tiles.</string>
+
+    <string name="hint97part2">		Laser Surgery\n
+		One solution starts: D, DR, DR, U, UL, U, UL, UR, UR, DR, U, UR (leaving you on the top-most green tile)\n
+		Then: DR, DR, DR, DL, D, UL, U, DL, D, DR, DL, D, UR, UR\n
+		Finally: U, UR, D, D, DL, DL, DL, DL, D, D, D, U, D, U</string>
+
+    <string name="hint16part1">	Leftovers	\n
+	You should only leave two green walls behind when you leave the starting section.	\n
+	Start by jumping down onto the blue tile.	\n
+	The only way to destroy those walls you leave behind is to shoot them.	\n
+	Use an ice tile to refract the laser beam.</string>
+
+    <string name="hint16part2">		Leftovers\n
+		The spinner with ice tiles next to it needs turning twice to put an ice tile in the right place.\n
+		The laser tiles need firing at the ice from the tile up-left of the second spinner. <a href="hints/leftovers_laser_position.jpg">Click here for a picture.</a>\n
+		Youll need to use both laser tiles. Make sure you dont trample the green tiles youll need to use to fire the laser in the right direction!\n
+		Fire the lasers off into space to keep rotating the spinner without wasting green tiles.\n
+		The final spinner is only useful as a safe tile to finish on.</string>
+
+    <string name="hint20part1">	Lifts	\n
+	Jumping on a trampoline from a raised tile does a higher bounce, which can land you on another high tile. But hopping onto a trampoline from a normal tile doesnt allow you to gain height.	\n
+	Its impossible to destroy all the blue walls on this level, so youll have to use the trampoline in the bottom-right to get to the last green wall.</string>
+
+    <string name="hint20part2">		Lifts\n
+		Try starting with: U, DR, UL, U, U, UR, DR, UR, UL, UR, U.\n
+		Then: D, UL, DR, D, DL, U, UR, DR, DR, D, D.\n
+		Finally: D, D, DR, UR, UR, UL, DR, D, U, D, DR, D.</string>
+
+    <string name="hint50part1">	Maze	\n
+	Start by breaking the top green tile and returning to the starting tile, then go D, DR, DR	\n
+	Then go DL, U, D, D, DL	\n
+	Then UR, DR, UR, U, DR, UR, U, U, D, D	\n
+	From here you should be able to get to the green tile just down-left of the top spinner while breaking all the green and blue tiles on the way.</string>
+
+    <string name="hint50part2">		Maze\n
+		You want to rotate the top spinner once and finish by firing the bottom yellow tile upwards three times (to blow up the green walls)\n
+		To do this, from the green tile down-left of the top spinner, go DR, D, U, UR, UL, DR, DL\n
+		Then D, D, D, UR, D, UL, D\n
+		Finish with U, D, DR, UL, U, D, U</string>
+
+    <string name="hint5part1">	Mini Island	\n
+	As usual, make sure you dont leave any unreachable dead-ends of green tiles behind.	\n
+	You should finish on the central island.	\n
+	Dont go to the central island until youve broken all the other green tiles.</string>
+
+    <string name="hint5part2">		Mini Island\n
+		To get the two green tiles in between the trampolines at the right, jump onto one of the green tiles then reverse direction. (I.e. bounce south off the north trampoline, then hop north twice.)</string>
+
+    <string name="hint35part1">	More Stripes	\n
+	Make sure you dont leave any green tiles behind in the first column when you leave it.	\n
+	Then walk over all the green tiles in the right-hand two columns before jumping downwards.	\n
+	Then you want to jump up off the left trampoline of the three at the bottom. Make sure you leave a route so you can get back to the middle trampoline later.</string>
+
+    <string name="hint35part2">		More Stripes\n
+		(from hint1) Then go back round to the bottom (dont destroy too many tiles in the section with a column of green tiles next to a column of blue tiles)\n
+		Finally, clean up any green tiles at the bottom and jump upwards from the middle trampoline. You should then be able to finish off the remaining tiles and finish either on a blue tile or by jumping down-right back to the grey tiles at the bottom.</string>
+
+    <string name="hint80part1">	No Swimming Allowed	\n
+	You need to take one of the boats upwards along the column to the right of where they start.	\n
+	So you need to get to a tile directly under a boat so you can jump onto it.</string>
+
+    <string name="hint80part2">		No Swimming Allowed\n
+		The ice is no help for that, since you cant stop in the right place, so you need to use the other boat.\n
+		Take the top boat down-right, then look at where the other boat is.\n
+		Go back round to the left without moving the top boat again, then take the bottom boat up-right. From there you can step upwards onto the first boat.</string>
+
+    <string name="hint43part1">	Nucleus	\n
+	You leave the central area by going upwards.	\n
+	You mainly go anti-clockwise around the outside, but you should destroy one blue and one green tile to the right first.	\n
+	You finish by jumping onto the top-right yellow tile from the outside.</string>
+
+    <string name="hint43part2">		Nucleus\n
+		You need to have already gotten rid of one of the green tiles in the central area so it doesnt block the laser.\n
+		Start by going up-right then down-left, then up.</string>
+
+    <string name="hint37part1">	One Two One Two	\n
+	Step on as few blue tiles as possible, since once theyve gone green you have to destroy them. The exception to this is that you can finish a level by stepping onto a blue tile (since then you never step off, so it doesnt turn green.)	\n
+	line of blue tiles followed by one green tile can be destroyed by walking along it then back again.</string>
+
+    <string name="hint37part2">		One Two One Two\n
+		Solution: DL, DL, D, D, DL, UL, UL, UL, DL, UR, DR, DR, DR, UR...\n
+		Then: DR, D, U, UR, DR, D, U, UL, U, UR, DR, UR, U, UL, DL, UL, U (onto trampoline)\n
+		Finally trample the remaining green tiles and finish by stepping onto a blue tile.</string>
+
+    <string name="hint28part1">	Only One Way Up	\n
+	Plan to fire the bottom yellow tile up-right at the other yellow tile.	\n
+	after firing the laser, youll need to head towards the right-hand spinner.	\n
+	You dont need to lower the blue walls.	\n
+	You should go up the lift when it is down-left of the spinner.	\n
+	You need to step on the spinner 5 times. Note there is a trampoline positioned so you bounce onto the spinner.</string>
+
+    <string name="hint28part2">		Only One Way Up\n
+		Start with UL, DL, DR, UR - this clears out a green tile which would otherwise be problematic later.\n
+		Then go DR, DL, DL, DL, DL to clear the firing path between the yellow tiles.\n
+		Then step on the spinner a couple of times, then proceed round the top right before bouncing back onto the spinner.</string>
+
+    <string name="hint68part1">	Pro Skater	\n
+	Note that the right-hand side of the level is not symmetrical.	\n
+	You use the anti-ice to get the green tile immeadiatly to the left of the anti-ice pickup (theres no other way to reach it)	\n
+	Finish on the top-most blue tile.	\n
+	When you first go to the right, make sure you leave no green tiles except the top-most one.</string>
+
+    <string name="hint68part2">		Pro Skater\n
+		Start with UR, D, UR, UR, D, UR\n
+		Then go the right-hand side and get all but the top-most green tile before going and collecting the anti-ice.\n
+		Then from the anti-ice tile, go DL, UL, UR, D</string>
+
+    <string name="hint67part1">	Radioactive Ice	\n
+	You can get all the green tiles except the top-most and bottom-most ones without collecting any anti-ice.	\n
+	You can start by destroying all the initial green tiles except the top and bottom ones - you will be left with all four blue tiles turned green.</string>
+
+    <string name="hint67part2">		Radioactive Ice\n
+		You might not need to collect all the anti-ice.\n
+		You can get the two awkward green tiles by anti-icing one of the rightmost ice tiles, then sliding from there.\n
+		Use a trampoline to get to the rightmost column of ice. Youll need two anti-ice to do this.\n
+		Remember to leave an escape route to use after getting those outermost green tiles!</string>
+
+    <string name="hint61part1">	Refraction	\n
+	The green wall and the right-most of the three green tiles at the top must both be shot with lasers.	\n
+	Use refraction to destroy the right-most of the three green tiles at the top.	\n
+	Dont destroy the bottom-most yellow tile.	\n
+	Start by firing the first yellow tile up-right, then fire it down-right.	\n
+	Fire the second yellow tile down-right, then down-left.	\n
+	Finally, fire the bottom-most yellow tile upwards.</string>
+
+    <string name="hint61part2">		Refraction\n
+		Move sequence: D, DR, UR, UL, DL, DL, UR, DL (blows up green wall)\n
+		Then: D, DR, UR, U, U, DR, D, D, D, DL, DR, DL, DL, DL, DL\n
+		Finally: DL, UL, UL, UR, DR, U</string>
+
+    <string name="hint91part1">	Reversing Space	\n
+    Travel from left to right, doing one section at a time. Remember you dont need to break all the blue tiles.	\n
+    Dont step on the builder when there are any green tiles next to it else theyll become walls.\n
+    </string>
+    <string name="hint91part2">Reversing Space\n
+    Start with: U, U, D, U, UR, UR, U\n
+    First section (builder) is then: UL, DR, UL, UR, DL, DR, D, DR, DR, D\n
+    Second section (spinner) is then: DL, D, UR, UR, DL, UR, UL, U, UR, UR, U\n
+    Final section is then: UL, U, UR, D, UR, D, DL, D, DR, DR\n
+    </string>
+    <string name="hint17part1">	Rental Boat	\n
+	Roughly speaking, you need to move the boat up-left, then destroy all the green tiles and take the boat up-right.</string>
+
+    <string name="hint17part2">		Rental Boat\n
+		To move the boat up-left, you start by taking it down-right.\n
+		To move the boat where you need it, go UR, DR, U, DR, D, DL, DR, DR, UL\n
+		From here, you can _almost_ finish the level by going D, D, UL, U, UR but that leaves you with no safe finishing move.\n
+		Maybe if you created somewhere to finish by jumping on the bottom-right-most builder tile.\n
+		After moving the boat up-left (and with Emi standing on the boat) go: D, DR, DR, DR, U, D\n
+		Then finish with UL, UL, DL, UL, U, UR (riding boat), UR, U, UL, D, D, D, D, DL</string>
+
+    <string name="hint53part1">	Revolver Cannon	\n
+	If you can fire the bottom-right yellow tile upwards twice from the position above the right-hand spinner, youll take out both the awkward green tiles.	\n
+	Then youd want to move that yellow tile to just up-left of the left-hand spinner and fire it upwards from there to destroy the last blue tile and make the blue wall retract.	\n
+	Make sure you get rid of all the blue tiles as you do this.	\n
+	Remember that if Emis standing on a spinner, you can rotate it by stepping onto an adjacent yellow tile and then back again (as long as the laser wont destroy anything important at least!)</string>
+
+    <string name="hint53part2">		Revolver Cannon\n
+		To start, go stand on the first blue tile then go to the right spinner: DR, DR, UR\n
+		Then spin the right spinner until you can fire upwards with DR, UL, D, U, D, U, D, U, U\n
+		To fire it again, you need to spin 6 times. D, UR, DL, DR, UL, D, U, UR, UL, D, D, U, U\n
+		Then rotate 4 times and move over to the left spinner: D, UR, DL, UR, DL, UL, DR, UL, DL\n
+		Rotate the left spinner twice more and then fire upwards: DL, U, UR, DR, DL, UL, UR, DR, DL, DL, U</string>
+
+    <string name="hint23part1">	Rolling Hexagons	\n
+	Dont destroy both of the lower two blue tiles at the beginning.	\n
+	After your second move, the two spinners will be in a vertical line. How can you move so that you make them into another vertical line one tile further up?	\n
+	If you step on the top spinner 3 times (without stepping on the other spinner), youll move the other spinner to touch the first of the three blue tiles.</string>
+
+    <string name="hint23part2">		Rolling Hexagons\n
+		From the start, step U, DR, U, DR, UL, D, U, U\n
+		Then UR, DL, DR, UL, U.\n
+		Then UR, DL, DR, UL, U.\n
+		Then UR, DL, DR, UL, U. for a third time\n
+		Finally: U, U, UR, UR, UR, DR, DR, D, D, DL, UL, UL, D, DR, DL, UL</string>
+
+    <string name="hint62part1">	Route Finder	\n
+	You should finish on the right-hand blue wall. So you need to turn all the blue tiles green.	\n
+	Try to break all the tiles except for the blue tile in between the two ice tiles (leave that green) while ending up on the bottom-right route (where the two blue walls start)</string>
+
+    <string name="hint62part2">		Route Finder\n
+		Start UL, DR, DR, UR, DL, UR, UR, D, D, U, D\n
+		Then DR, UR, U, UR, D, UL, UR (10 blue tiles remaining after this)\n
+		Then UR, UR, UL, U, U, UL, UR, DR, UR, DR, DL, D, D (8 blue tiles remaining)\n
+		Then DR, D, UL, DR, D, DL, UL, U, U, DL. Should be easy now!</string>
+
+    <string name="hint89part1">	Somewhat Constructive	\n
+	Dont let the builder tiles build any walls. Dont leave green tiles behind.</string>
+
+    <string name="hint89part2">		Somewhat Constructive\n
+		 after stepping on the first builder, go: DL, U, UR, DR, D, UR to get to the second builder.\n
+		Then go: UL, D, DR, UR, D to get to the last builder (theres no point stepping onto the right-most builder tile.)\n
+		In the bottom right corner, a lot of possible moves leave in unsolvable (by making in impossible to leave that area.) If you avoid those moves, its easy :-)\n
+		 after stepping on the first lift, go: UR, DR, UR, UR, DL, DR, UL, DL, DR, UL.</string>
+
+    <string name="hint55part1">	Sprocket	\n
+	You want all the green walls to end up together near the middle.</string>
+
+    <string name="hint55part2">		Sprocket\n
+		Start with: DR, UR, DR, DR, DR, UL, DR, UL, DR, UL, DR, UL, DR, UL, U (now standing on left-hand spinner)\n
+		Then: U, U, UR, DR, DR, UL, D, UR (now standing on the top-right spinner)\n
+		Then: DR, DR, D, DL, UL, D (the green walls now retract)\n
+		Finally: D, UL, UL, UR, U, UL, UR, DR, DR</string>
+
+    <string name="hint36part1">	Stripes	\n
+	First you need to break all the green tiles and all the blue tiles except the bottom-right-most one.	\n
+	Try turning all the blue tiles green first (expect the one in the bottom-right corner.)</string>
+
+    <string name="hint36part2">		Stripes\n
+		For example, you could start with: Up*5, Up-right, Down-right, Down*5, Up-right*2, Up*4, Up-right, Down*4, Up-left. This should leave you with an fairly easy green tile problem.</string>
+
+    <string name="hint56part1">	Switch	\n
+	Leave the 6 green tiles at the top until you can shoot the yellow tile in the middle of them.</string>
+
+    <string name="hint56part2">		Switch\n
+		The last thing to do is use the trampoline in the bottom-right corner to arrive on the green walls once they retract.\n
+		You need to step on the spinner twice at the beginning of the level to leave the trampolines in the right place.</string>
+
+    <string name="hint58part1">	Three More Ways	\n
+	Leave the top part till last.	\n
+	To complete the bottom-left part, go DL, DL, UL, D, DL, U, DR, DL, UR, UR	\n
+	To complete the bottom-right part, you need to move the bottom-right trampoline to be adjacent to the trampoline you use to enter the bottom-right part. I.e. rotate the bottom-right spinner twice, then the other spinner 3 times.</string>
+
+    <string name="hint58part2">		Three More Ways\n
+		From the centre, to complete the bottom-right part, go DR, DR, UR, DR, D, UL, UL, DR, UL, DL, UR, DR, DL, U, UL\n
+		For the top part, you want to step on the top spinner once so theres a trampoline beneath it, then use that trampoline to jump over the spinner.\n
+		Moves: U, U, U, DR, U, UR, DR, D, DL, U\n
+		Then from here (the tile above the top spinner) go: D, DL, UL, U, UR, DL</string>
+
+    <string name="hint22part1">	Trampoline Retrieval	\n
+	You need to fetch a trampoline.	\n
+	The green tiles on the right are separate; you can leave them till youve managed to get a trampoline where you need it.	\n
+	You need to get a trampoline onto the tile down-right of the right-hand spinner.	\n
+	There arent that many permutations of possible moves involving just the left-hand boat, the trampolines and the spinners.</string>
+
+    <string name="hint22part2">		Trampoline Retrieval\n
+		Start by taking the left-hand boat down-left, then stepping on the first spinner four times, so the boat is up-left of the right-hand spinner.\n
+		Then starting from standing on the boat go DL, DR, U, UR. Then you should be able to spin the right-hand spinner until the trampoline is where it needs to be.\n
+		Now you can go and get all the green tiles at the right - take the boat up-right, then get all the top group before riding the boat downwards. Finish off the bottom group of green tiles.\n
+		Finally, use the lift to get onto the blue walls from where you can bounce northwards and get the last group of green tiles.</string>
+
+    <string name="hint11part1">	Trampolines	\n
+	Dont leave any green tiles behind. Remember to use undo (right mouse button or Z on keyboard) if you make mistakes.</string>
+
+    <string name="hint11part2">		Trampolines\n
+		Start by bouncing downwards off the first trampoline, then go down once more then up-right.\n
+		Demolish the remaining 6 green tiles in this section before taking the next trampoline down-left.\n
+		Then bounce up-left from the bottom-right most trampoline.\n
+		Then bounce downwards.\n
+		Then UR, U, UL, UL to arrive it the top-left section after taking out the remaining 3 green tiles in the middle..\n
+		Finally, go UR, DL, UL (so the wall stops you drowing on your last move)</string>
+    n
+    <string name="hint19part1">	Transport Hub	\n
+	The blue tiles can be ignored.	\n
+	Go for two lonely green tiles first.</string>
+
+    <string name="hint19part2">		Transport Hub\n
+		Start with DL, DL, UR, U, U, D, DR (get the top-most green tile)\n
+		Consider how to get to the right-most green tiles.\n
+		If you could take a boat down-right from the tile below where you start...\n
+		Take the left-most boat up-right, then down-right\n
+		If youre having trouble with that, remember you could leave one of the left-hand set of green tiles unbroken.\n
+		Next moves are: UR, D, D, U, UL (get the bottom-most green tile)\n
+		Then: UL, UL, UL, D, D, D, D, D, D, DR, UR, UL, UR (now on a boat just below the grey tile)\n
+		Finally: UL, UL, DR, DR, DR, U, UL, U, U, U, UL, DL, DL</string>
+
+    <string name="hint48part1">	Trigger Happy	\n
+	You destroy the three green walls at the right by shooting the yellow tile adjacent to them.	\n
+	You fire a laser down-right to do this.	\n
+	But you can only fire that laser twice.	\n
+	So shoot out a grey tile by firing the laser in the middle upwards.</string>
+
+    <string name="hint48part2">		Trigger Happy\n
+		Initial moves are: UL, U, UL, U, UR, U, UL, U, UL\n
+		Then take out all the green tiles and fire a laser upwards from the bottom-centre yellow tiles to destroy a grey tile.\n
+		Then trample the blue tile in the bottom left and the attached 7 green tiles (used to be green walls)\n
+		Then fire the laser near the top of the level down-right twice to take out the left-overs from near the beginning.\n
+		Move sequence for last section (after breaking the bottom-left blue tile and attached greens), stand on top-left grey tile then go: UR, DR, U, UR, DL, UR, DR, U, DR (fire), UL, DR (fire), UR, UL</string>
+    <string name="hint38part1">	Turtle	\n
+	Try to go around anti-clockwise, getting the four "legs" as you go. Leave the "head" till last.	\n
+	Get all the legs except the first one by jumping onto the extremity from the nearest trampoline.	\n
+	Get the head by jumping upwards on the middle column of trampolines and finish on the blue "head" tile. This is quite a hard level, so experiment a bit before reading more hints.</string>
+    <string name="hint38part2">		Turtle\n
+		Move sequence (there are variations on this which work, too): UL, DR, UL, U, U, DL, UL, UR (Now on top-right leg)\n
+		Then: DL, UL, DL, U, UL, DL, DL, DR, DR, DL, UL (Now on top-left leg)\n
+		Then: DR, D, D, UR, DR, DL (Now on bottom-left leg)\n
+		Finally: UR, DR, DR, U, UR, UR, D, DR, DL, DL, U, U (Done!)</string>
+    <string name="hint31part1">	Two Fish	\n
+	Break all the raised green tiles before jumping down. (You cant break all the blue tiles, so theres no way to lower the raised blue tiles.)</string>
+    <string name="hint31part2">Two Fish\n
+		This level should be fairly easy. If youre having problems, try playing the level "Stripes" again.</string>
+    <string name="hint39part1">	Wand	\n
+	You dont need to break all the blue tiles.	\n
+	Get the left-most green tile last. (Not counting the green wall)	\n
+	Get the right-most green tile second to last.	\n
+	First follow one of the blue paths, breaking it completely as you go.</string>
+    <string name="hint39part2">		Wand\n
+		Move list: Start with: DR, DR, UL, DR, DR, UR, DL, UR, U, U, D, UL, U, U, DL, DR\n
+		Then finish with: UR, DL, DL, D, UL, UL</string>
+    <string name="hint76part1">	Wave Cannon	\n
+	If you had enough jump pickups, you could stand on the spinner, and keep firing lasers upwards to take out the green tiles in the top-left corner.	\n
+	Go round the blue tile area clockwise, finishing by bouncing down-left off the trampoline. You want to make a profit of 3 jumps, and leave no green tiles behind.	\n
+	Remember that a dead-end string of blue tiles can be cleared by jumping on the end tile then reversing direction.	\n
+	after landing next to the spinner (with 3 jumps in hand), going: DL, jump, U, D, jump, U, D, jump, U should finish the level.</string>
+    <string name="hint76part2">	Wave Cannon\n
+		Solution: Start with UR, DR, UR, DR, UR, UR, DL, UR\n
+		Then: UR, UR, D, UL, DR, U, UR, U, UR, DR, jump, UL, DL, D, DR\n
+		Then: D, U, D, DR, D, U, D, D, DR, UL, DR, D, D, UL, UR, D, UL, UL\n
+		Then: DL, UR, DL, UL, U, U, DR, UL, DR, DL, DL, DR\n
+		Finally: UL, UL, UL, DR, UL, U, DL, then youre in position to fire those lasers.</string>
+
+
+</resources>

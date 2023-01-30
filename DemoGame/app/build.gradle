@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "koisignal.hexahop.per"
+        minSdkVersion 26
+        ndkVersion "25.1.8937393"
+        ndkPath = "D:/android-ndk/ndk/25.1.8937393"
+
+        targetSdkVersion 31
+        versionCode 3
+        versionName "1.2"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        lintOptions {
+            abortOnError false
+        }
+        ndk {
+            abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    namespace 'koisignal.hexahop.per'
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.gms:play-services-ads:21.4.0'
+    implementation "androidx.constraintlayout:constraintlayout:2.2.0-alpha05"
+    // Java language implementation
+    implementation("androidx.fragment:fragment:1.5.4")
+    // Java language implementation
+    implementation("androidx.activity:activity:1.6.1")
+
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
