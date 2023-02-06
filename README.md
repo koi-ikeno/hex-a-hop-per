@@ -7,4 +7,4 @@ android port of hex-a-hop
 - Replaced nonfree sound effects and background music.
 - Buttons to operate on Android are displayed on the screen.
 - Screen size tweaked for smartphones.
-- Added a hint button for the corresponding stage.
+- Added hint buttons for the corresponding stage.
