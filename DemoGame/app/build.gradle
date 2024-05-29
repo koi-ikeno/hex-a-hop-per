@@ -9,9 +9,9 @@ android {
         ndkVersion "25.1.8937393"
         ndkPath = "D:/android-ndk/ndk/25.1.8937393"
 
-        targetSdkVersion 31
-        versionCode 3
-        versionName "1.2"
+        targetSdkVersion 33
+        versionCode 10
+        versionName "1.9_github"
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         lintOptions {
             abortOnError false

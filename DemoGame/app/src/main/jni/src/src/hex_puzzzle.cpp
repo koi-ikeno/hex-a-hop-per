@@ -1764,8 +1764,8 @@ struct HexPuzzle : public State
 		//diff = SWAP32(diff);
 		//if (ret != 1 || diff<0 || diff>10)
 		//	diff = 0;
-		par = levelFiles.GetLevelDataVec()[3] + levelFiles.GetLevelDataVec()[4] * 128;
-		diff = levelFiles.GetLevelDataVec()[7] + levelFiles.GetLevelDataVec()[8] * 128;
+		par = levelFiles.GetLevelDataVec()[3] + levelFiles.GetLevelDataVec()[4] * 256;
+		diff = levelFiles.GetLevelDataVec()[7] + levelFiles.GetLevelDataVec()[8] * 256;
 
 		#ifdef USE_LEVEL_PACKFILE
 		//	loadPtr = endLoad = 0;
@@ -1905,7 +1905,7 @@ struct HexPuzzle : public State
 				) {
 				//levelPar = SWAP32(levelPar);
 				// 1111 1111 1111 1111
-				levelPar = levelFiles.GetLevelDataVec()[3] + levelFiles.GetLevelDataVec()[4] * 128 ;
+				levelPar = levelFiles.GetLevelDataVec()[3] + levelFiles.GetLevelDataVec()[4] * 256 ;
 				// 5,6
 				//levelPar = SWAP32(levelPar);
 			}
@@ -1916,7 +1916,7 @@ struct HexPuzzle : public State
 				) {
 				//levelDiff = SWAP32(levelDiff);
 				//fn(&levelDiff, 1, sizeof(levelDiff), f);
-				levelDiff = levelFiles.GetLevelDataVec()[7] + levelFiles.GetLevelDataVec()[8] * 128;
+				levelDiff = levelFiles.GetLevelDataVec()[7] + levelFiles.GetLevelDataVec()[8] * 256;
 				// 9,10
 				//levelDiff = SWAP32(levelDiff);
 			}
@@ -1932,9 +1932,9 @@ struct HexPuzzle : public State
 			//player.x = SWAP32(player.x);
 			//player.y = SWAP32(player.y);
 			//fn(&player, sizeof(player), 1, f);
-			player.x = levelFiles.GetLevelDataVec()[15] + levelFiles.GetLevelDataVec()[16] * 128;
+			player.x = levelFiles.GetLevelDataVec()[15] + levelFiles.GetLevelDataVec()[16] * 256;
 			// 17 18
-			player.y = levelFiles.GetLevelDataVec()[19] + levelFiles.GetLevelDataVec()[20] * 128;
+			player.y = levelFiles.GetLevelDataVec()[19] + levelFiles.GetLevelDataVec()[20] * 256;
 			// 21 22
 
 			// 
@@ -2005,7 +2005,7 @@ struct HexPuzzle : public State
 					x += offsetx; y += offsety;
 					//fn(&len, sizeof(len), 1, f);
 					len = levelFiles.GetLevelDataVec()[itr_data] +
-						levelFiles.GetLevelDataVec()[itr_data + 1] * 128;
+						levelFiles.GetLevelDataVec()[itr_data + 1] * 256;
 					itr_data++;
 					itr_data++;
 
