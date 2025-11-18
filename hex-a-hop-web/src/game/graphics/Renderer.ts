@@ -3,11 +3,17 @@
  * Ported from gfx.cpp
  */
 
+import { GFX_SIZE, TILE_H1, Rect } from '../core/HexGrid';
+
 export class Renderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private textures: Map<string, HTMLImageElement>;
   private loadingPromises: Promise<void>[];
+
+  // Scroll offsets for camera movement
+  public scrollX: number = 0;
+  public scrollY: number = 0;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -18,6 +24,9 @@ export class Renderer {
     this.ctx = ctx;
     this.textures = new Map();
     this.loadingPromises = [];
+
+    // Disable image smoothing for pixel-perfect rendering
+    this.ctx.imageSmoothingEnabled = false;
   }
 
   /**
@@ -29,7 +38,7 @@ export class Renderer {
       const img = new Image();
       img.onload = () => {
         this.textures.set(name, img);
-        console.log(`Loaded texture: ${name}`);
+        console.log(`Loaded texture: ${name} (${img.width}x${img.height})`);
         resolve();
       };
       img.onerror = () => {
@@ -51,6 +60,13 @@ export class Renderer {
   }
 
   /**
+   * Get a loaded texture
+   */
+  getTexture(name: string): HTMLImageElement | undefined {
+    return this.textures.get(name);
+  }
+
+  /**
    * Clear the canvas
    */
   clear(color: string = '#1a1a2e'): void {
@@ -59,7 +75,8 @@ export class Renderer {
   }
 
   /**
-   * Draw an image
+   * Draw an image from sprite sheet
+   * Equivalent to SDL_RenderCopy
    */
   drawImage(
     textureName: string,
@@ -79,6 +96,56 @@ export class Renderer {
     }
 
     this.ctx.drawImage(texture, sx, sy, sw, sh, dx, dy, dw, dh);
+  }
+
+  /**
+   * Render a tile from sprite sheet
+   * Ported from RenderTile() in hex_puzzzle.cpp line 667
+   *
+   * @param reflect - Use reflected tile sprite
+   * @param tileIndex - Tile type index
+   * @param x - Screen X position (before scroll)
+   * @param y - Screen Y position (before scroll)
+   * @param spriteRect - Source rectangle in sprite sheet
+   */
+  renderTile(
+    reflect: boolean,
+    tileIndex: number,
+    x: number,
+    y: number,
+    spriteRect: Rect
+  ): void {
+    const textureName = reflect ? 'tiles_reflect' : 'tiles';
+    const texture = this.textures.get(textureName);
+
+    if (!texture) {
+      // Draw placeholder if texture not loaded
+      this.ctx.fillStyle = '#ff00ff';
+      this.ctx.fillRect(
+        x - this.scrollX - GFX_SIZE / 2,
+        y - this.scrollY - GFX_SIZE + TILE_H1,
+        GFX_SIZE,
+        GFX_SIZE
+      );
+      return;
+    }
+
+    // Calculate destination position (adjusted for scroll and tile offset)
+    // Based on: dst = {x-scrollX-GFX_SIZE/2, y-scrollY-GFX_SIZE+TILE_H1, 0, 0}
+    const dx = x - this.scrollX - GFX_SIZE / 2;
+    const dy = y - this.scrollY - GFX_SIZE + TILE_H1;
+
+    this.ctx.drawImage(
+      texture,
+      spriteRect.x,
+      spriteRect.y,
+      spriteRect.w,
+      spriteRect.h,
+      dx,
+      dy,
+      spriteRect.w,
+      spriteRect.h
+    );
   }
 
   /**
@@ -104,6 +171,14 @@ export class Renderer {
     this.ctx.fillStyle = color;
     this.ctx.textAlign = align;
     this.ctx.fillText(text, x, y);
+  }
+
+  /**
+   * Set camera scroll position
+   */
+  setScroll(x: number, y: number): void {
+    this.scrollX = x;
+    this.scrollY = y;
   }
 
   /**

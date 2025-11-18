@@ -1,11 +1,15 @@
 import './style.css';
+import { Renderer } from './game/graphics/Renderer';
+import { GameLoop } from './game/core/GameLoop';
+import { HexGrid, SCREEN_W, SCREEN_H } from './game/core/HexGrid';
+import { TileType } from './game/types/TileTypes';
 
 /**
  * Hex-a-Hop Web Edition
- * Main entry point
+ * Main entry point - Phase 2
  */
 
-console.log('Hex-a-Hop Web - Initializing...');
+console.log('Hex-a-Hop Web - Initializing Phase 2...');
 
 // Get canvas element
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -13,78 +17,148 @@ if (!canvas) {
   throw new Error('Canvas element not found');
 }
 
-const ctx = canvas.getContext('2d');
-if (!ctx) {
-  throw new Error('Could not get 2D context');
+// Set canvas size to match game resolution
+canvas.width = SCREEN_W;
+canvas.height = SCREEN_H;
+
+// Create renderer
+const renderer = new Renderer(canvas);
+
+// Game state
+let isLoaded = false;
+let testTiles: Array<{ type: TileType; gridX: number; gridY: number }> = [];
+
+/**
+ * Initialize game - load assets
+ */
+async function init() {
+  console.log('Loading assets...');
+
+  try {
+    // Load tile sprite sheets
+    await renderer.loadTexture('tiles', '/assets/images/tiles.png');
+    await renderer.loadTexture('tiles_reflect', '/assets/images/tiles_reflect.png');
+    await renderer.loadTexture('title', '/assets/images/title.png');
+
+    await renderer.waitForTextures();
+
+    console.log('Assets loaded successfully!');
+
+    // Create test tiles in a hex pattern
+    testTiles = [
+      // Center tile
+      { type: TileType.NORMAL, gridX: 5, gridY: 5 },
+
+      // Ring around center (6 directions)
+      { type: TileType.COLLAPSABLE, gridX: 6, gridY: 5 },
+      { type: TileType.TRAMPOLINE, gridX: 5, gridY: 6 },
+      { type: TileType.WALL, gridX: 4, gridY: 6 },
+      { type: TileType.SPINNER, gridX: 4, gridY: 5 },
+      { type: TileType.BUILDER, gridX: 5, gridY: 4 },
+      { type: TileType.LIFT_UP, gridX: 6, gridY: 4 },
+
+      // Outer ring
+      { type: TileType.FLOATING_BALL, gridX: 7, gridY: 5 },
+      { type: TileType.GUN, gridX: 6, gridY: 7 },
+      { type: TileType.TRAP, gridX: 3, gridY: 7 },
+      { type: TileType.SWITCH, gridX: 3, gridY: 5 },
+      { type: TileType.COLLAPSE_DOOR, gridX: 5, gridY: 3 },
+      { type: TileType.COLLAPSABLE2, gridX: 7, gridY: 3 },
+    ];
+
+    // Center the camera on the test pattern
+    const centerX = HexGrid.gridToScreenX(5, 5);
+    const centerY = HexGrid.gridToScreenY(5, 5);
+    renderer.setScroll(centerX - SCREEN_W / 2, centerY - SCREEN_H / 2);
+
+    isLoaded = true;
+  } catch (error) {
+    console.error('Failed to load assets:', error);
+  }
 }
 
-// Set canvas size (will be adjusted based on game requirements)
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 600;
+/**
+ * Update game state
+ */
+function update(deltaTime: number) {
+  // Game logic will go here in Phase 3
+  // For now, just a placeholder
+}
 
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
+/**
+ * Render the game
+ */
+function render() {
+  // Clear screen
+  renderer.clear('#1a1a2e');
 
-// Test rendering - draw a simple grid to verify setup
-function drawTestPattern() {
-  if (!ctx) return;
-
-  // Clear canvas
-  ctx.fillStyle = '#1a1a2e';
-  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-  // Draw grid
-  ctx.strokeStyle = '#16213e';
-  ctx.lineWidth = 1;
-
-  const gridSize = 40;
-  for (let x = 0; x < CANVAS_WIDTH; x += gridSize) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, CANVAS_HEIGHT);
-    ctx.stroke();
+  if (!isLoaded) {
+    // Show loading message
+    renderer.drawText(
+      'Loading assets...',
+      SCREEN_W / 2,
+      SCREEN_H / 2,
+      'bold 24px Arial',
+      '#ffffff',
+      'center'
+    );
+    return;
   }
 
-  for (let y = 0; y < CANVAS_HEIGHT; y += gridSize) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(CANVAS_WIDTH, y);
-    ctx.stroke();
+  // Render test tiles
+  for (const tile of testTiles) {
+    const screenX = HexGrid.gridToScreenX(tile.gridX, tile.gridY);
+    const screenY = HexGrid.gridToScreenY(tile.gridX, tile.gridY);
+    const spriteRect = HexGrid.getTileSpriteRect(tile.type);
+
+    renderer.renderTile(false, tile.type, screenX, screenY, spriteRect);
   }
 
-  // Draw title text
-  ctx.fillStyle = '#00ff88';
-  ctx.font = 'bold 48px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('Hex-a-Hop Web', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 50);
+  // Draw UI overlay
+  renderer.drawText(
+    'Hex-a-Hop Web - Phase 2',
+    10,
+    20,
+    'bold 20px Arial',
+    '#00ff88',
+    'left'
+  );
 
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '24px Arial';
-  ctx.fillText('Phase 1: Project Setup Complete', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 20);
+  renderer.drawText(
+    'Rendering System Active',
+    10,
+    45,
+    '16px Arial',
+    '#ffffff',
+    'left'
+  );
 
-  ctx.font = '16px Arial';
-  ctx.fillStyle = '#888888';
-  ctx.fillText('Canvas 2D Rendering Active', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 60);
+  renderer.drawText(
+    `Tiles: ${testTiles.length} | Canvas: ${SCREEN_W}x${SCREEN_H}`,
+    10,
+    SCREEN_H - 10,
+    '14px Arial',
+    '#888888',
+    'left'
+  );
+
+  // Instructions
+  renderer.drawText(
+    'Phase 2 Complete - Hex grid rendering works!',
+    SCREEN_W / 2,
+    SCREEN_H - 30,
+    '16px Arial',
+    '#00ff88',
+    'center'
+  );
 }
 
-// Initial render
-drawTestPattern();
+// Create game loop
+const gameLoop = new GameLoop(update, render);
 
-// Basic game loop (placeholder for now)
-let lastTime = 0;
-function gameLoop(currentTime: number) {
-  const deltaTime = currentTime - lastTime;
-  lastTime = currentTime;
-
-  // For now, just keep the test pattern visible
-  // In Phase 2, this will be replaced with actual game rendering
-
-  requestAnimationFrame(gameLoop);
-}
-
-// Start the game loop
-requestAnimationFrame(gameLoop);
-
-console.log('Hex-a-Hop Web - Ready!');
-console.log(`Canvas size: ${CANVAS_WIDTH}x${CANVAS_HEIGHT}`);
+// Start initialization and game loop
+init().then(() => {
+  console.log('Starting game loop...');
+  gameLoop.start();
+  console.log('Hex-a-Hop Web - Phase 2 Ready!');
+});
