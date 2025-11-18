@@ -1,18 +1,21 @@
 import './style.css';
 import { Renderer } from './game/graphics/Renderer';
 import { GameLoop } from './game/core/GameLoop';
-import { HexGrid, SCREEN_W, SCREEN_H, GFX_SIZE, TILE_H1 } from './game/core/HexGrid';
+import { HexGrid, SCREEN_W, SCREEN_H } from './game/core/HexGrid';
 import { Level, createTestLevel } from './game/core/Level';
 import { Player } from './game/core/Player';
 import { InputHandler } from './game/core/InputHandler';
+import { SoundManager } from './game/audio/SoundManager';
+import { TouchControls } from './game/ui/TouchControls';
+import { GameUI } from './game/ui/GameUI';
 import { Direction } from './game/types/TileTypes';
 
 /**
  * Hex-a-Hop Web Edition
- * Main entry point - Phase 3
+ * Main entry point - Phase 4
  */
 
-console.log('Hex-a-Hop Web - Initializing Phase 3...');
+console.log('Hex-a-Hop Web - Initializing Phase 4...');
 
 // Get canvas element
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -24,8 +27,11 @@ if (!canvas) {
 canvas.width = SCREEN_W;
 canvas.height = SCREEN_H;
 
-// Create renderer
+// Create systems
 const renderer = new Renderer(canvas);
+const soundManager = new SoundManager();
+const gameUI = new GameUI();
+const touchControls = new TouchControls(canvas);
 
 // Game state
 let isLoaded = false;
@@ -36,6 +42,7 @@ let inputHandler: InputHandler;
 let gameWon = false;
 let gameLost = false;
 let moves = 0;
+let soundsLoaded = false;
 
 /**
  * Initialize game - load assets
@@ -51,6 +58,16 @@ async function init() {
 
     await renderer.waitForTextures();
 
+    // Load sounds
+    console.log('Loading sounds...');
+    await soundManager.loadSound('collapse', '/assets/audio/sound-collapse.ogg');
+    await soundManager.loadSound('death', '/assets/audio/sound-death.ogg');
+    await soundManager.loadSound('win', '/assets/audio/sound-win.ogg');
+    await soundManager.loadSound('trampoline', '/assets/audio/sound-trampoline.ogg');
+
+    await soundManager.waitForSounds();
+    soundsLoaded = true;
+
     console.log('Assets loaded successfully!');
 
     // Create level and player
@@ -63,8 +80,18 @@ async function init() {
     inputHandler.setUndoCallback(handleUndo);
     inputHandler.setResetCallback(handleReset);
 
+    // Setup touch controls
+    touchControls.setMoveCallback(handleMove);
+    touchControls.setUndoCallback(handleUndo);
+    touchControls.setResetCallback(handleReset);
+
     // Center camera on player
     updateCamera();
+
+    // Enable audio context on first user interaction
+    canvas.addEventListener('click', () => {
+      soundManager.resumeContext();
+    }, { once: true });
 
     isLoaded = true;
   } catch (error) {
@@ -82,15 +109,26 @@ function handleMove(direction: Direction): void {
   if (moved) {
     moves++;
 
+    // Play step sound
+    if (soundsLoaded) {
+      soundManager.playSound('collapse', 0.3);
+    }
+
     // Check win condition
     if (level.isComplete()) {
       gameWon = true;
+      if (soundsLoaded) {
+        soundManager.playSound('win');
+      }
       console.log(`Victory! Completed in ${moves} moves!`);
     }
 
     // Check death
     if (player.isDead(level)) {
       gameLost = true;
+      if (soundsLoaded) {
+        soundManager.playSound('death');
+      }
       console.log('Game over - fell through!');
     }
 
@@ -161,6 +199,8 @@ function render() {
     return;
   }
 
+  const ctx = renderer.getContext();
+
   // Render level tiles
   for (let i = 0; i < level.height; i++) {
     for (let j = 0; j < level.width; j++) {
@@ -172,7 +212,6 @@ function render() {
       const spriteRect = HexGrid.getTileSpriteRect(tile.type);
 
       // Dim tiles that have collapsed
-      const ctx = renderer.getContext();
       if (tile.strength <= 0 && tile.type >= 2 && tile.type <= 4) {
         ctx.globalAlpha = 0.3;
       }
@@ -183,9 +222,8 @@ function render() {
     }
   }
 
-  // Render player (using a simple colored hex for now)
+  // Render player (using a simple colored hex)
   const playerScreen = player.getScreenPosition();
-  const ctx = renderer.getContext();
 
   // Draw player as a bright hex
   ctx.fillStyle = gameLost ? '#ff0000' : gameWon ? '#00ff00' : '#ffff00';
@@ -204,80 +242,26 @@ function render() {
   ctx.closePath();
   ctx.fill();
 
-  // Draw UI overlay
-  renderer.drawText(
-    'Hex-a-Hop Web - Phase 3',
-    10,
-    20,
-    'bold 20px Arial',
-    '#00ff88',
-    'left'
-  );
+  // Render UI
+  gameUI.renderStats(ctx, {
+    levelName: level.name,
+    moves,
+    tilesRemaining: level.greenTilesRemaining,
+    totalTiles: level.totalGreenTiles,
+  });
 
-  renderer.drawText(
-    level.name,
-    10,
-    45,
-    '16px Arial',
-    '#ffffff',
-    'left'
-  );
-
-  renderer.drawText(
-    `Moves: ${moves} | Green tiles: ${level.greenTilesRemaining}/${level.totalGreenTiles}`,
-    10,
-    70,
-    '16px Arial',
-    '#ffffff',
-    'left'
-  );
-
-  // Game status
+  // Render game status overlays
   if (gameWon) {
-    renderer.drawText(
-      `VICTORY! Completed in ${moves} moves!`,
-      SCREEN_W / 2,
-      SCREEN_H / 2,
-      'bold 32px Arial',
-      '#00ff00',
-      'center'
-    );
-    renderer.drawText(
-      'Press R to restart',
-      SCREEN_W / 2,
-      SCREEN_H / 2 + 40,
-      '20px Arial',
-      '#ffffff',
-      'center'
-    );
+    gameUI.renderVictory(ctx, moves);
   } else if (gameLost) {
-    renderer.drawText(
-      'GAME OVER',
-      SCREEN_W / 2,
-      SCREEN_H / 2,
-      'bold 32px Arial',
-      '#ff0000',
-      'center'
-    );
-    renderer.drawText(
-      'Press R to restart',
-      SCREEN_W / 2,
-      SCREEN_H / 2 + 40,
-      '20px Arial',
-      '#ffffff',
-      'center'
-    );
+    gameUI.renderGameOver(ctx);
   }
 
-  // Instructions
-  renderer.drawText(
-    'Controls: QWEASDZXC or Arrow Keys | R: Reset | U: Undo',
-    SCREEN_W / 2,
-    SCREEN_H - 10,
-    '14px Arial',
-    '#888888',
-    'center'
-  );
+  // Render controls help
+  gameUI.renderControls(ctx, SCREEN_H - 10, touchControls.isEnabled());
+
+  // Render touch controls
+  touchControls.render(ctx);
 }
 
 // Create game loop
@@ -287,7 +271,9 @@ const gameLoop = new GameLoop(update, render);
 init().then(() => {
   console.log('Starting game loop...');
   gameLoop.start();
-  console.log('Hex-a-Hop Web - Phase 3 Ready!');
+  console.log('Hex-a-Hop Web - Phase 4 Ready!');
   console.log('Level:', level.name);
   console.log('Objective: Step on all green tiles to win!');
+  console.log('Sound:', soundsLoaded ? 'enabled' : 'disabled');
+  console.log('Touch controls:', touchControls.isEnabled() ? 'enabled' : 'disabled');
 });
