@@ -4,8 +4,9 @@
 
 ## Features
 
+✅ **Bird's Eye View**: Strategic top-down perspective for puzzle solving
 ✅ **Desktop 3D Mode**: Play in browser with mouse/keyboard
-✅ **VR Mode**: Immersive VR experience with WebXR
+✅ **VR Mode**: Immersive overhead VR experience with WebXR
 ✅ **3D Hexagonal Grid**: Beautiful 3D hex tiles
 ✅ **Dual-Mode Support**: Seamless switching between desktop and VR
 ✅ **Three.js Powered**: Modern WebGL graphics
@@ -13,16 +14,18 @@
 
 ## Controls
 
-### Desktop Mode
-- **Mouse Drag**: Rotate camera (OrbitControls)
+### Desktop Mode (Bird's Eye View)
+- **Mouse Drag**: Rotate camera around game board
+- **Right Click + Drag**: Pan camera to move view
 - **Mouse Scroll**: Zoom in/out
 - **Left Click**: Select tile to move player
 - **R Key**: Reset level
 
-### VR Mode
-- **VR Controllers**: Point at tiles to select
-- **Trigger**: Confirm move
-- **Grip**: (Future: grab/manipulate objects)
+### VR Mode (Overhead View)
+- **Position**: You'll be positioned high above the game board
+- **VR Controllers**: Point at tiles to select (planned)
+- **Trigger**: Confirm move (planned)
+- **Natural Position**: Look down at the puzzle like a tabletop game
 
 ## Quick Start
 

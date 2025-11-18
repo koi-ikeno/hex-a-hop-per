@@ -113,11 +113,20 @@ function loadLevel(levelIndex: number) {
   playerPosition = { ...levelData.playerStart };
   createPlayer();
 
-  // Update camera to focus on level center
+  // Update camera to focus on level center - bird's eye view
   const centerX = levelData.width / 2;
   const centerY = levelData.height / 2;
   const centerPos = HexGrid3D.gridToWorld3D(centerX, centerY, 0);
+
+  // Position camera directly above the level center
+  scene3D.camera.position.set(centerPos.x, 25, centerPos.z + 8);
   scene3D.camera.lookAt(centerPos);
+
+  // Update OrbitControls target to level center
+  if (scene3D.orbitControls) {
+    scene3D.orbitControls.target.copy(centerPos);
+    scene3D.orbitControls.update();
+  }
 
   updateUI();
   console.log(`Level loaded: ${levelData.name} (${tiles.length} tiles)`);

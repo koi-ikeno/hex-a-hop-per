@@ -32,14 +32,15 @@ export class Scene3D {
     this.scene.background = new THREE.Color(0x0a0a0a);
     this.scene.fog = new THREE.Fog(0x0a0a0a, 20, 50);
 
-    // Camera
+    // Camera - Bird's eye view (top-down perspective)
     this.camera = new THREE.PerspectiveCamera(
-      75,
+      60, // Slightly narrower FOV for better orthographic-like view
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    this.camera.position.set(0, 8, 12);
+    // Position camera high above, looking straight down
+    this.camera.position.set(0, 25, 8); // High Y for top-down, slight Z for angle
     this.camera.lookAt(0, 0, 0);
 
     // Renderer
@@ -54,13 +55,16 @@ export class Scene3D {
     this.renderer.xr.enabled = true;
     container.appendChild(this.renderer.domElement);
 
-    // Desktop controls (OrbitControls)
+    // Desktop controls (OrbitControls) - Top-down bird's eye view
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.05;
-    this.orbitControls.minDistance = 5;
-    this.orbitControls.maxDistance = 30;
-    this.orbitControls.maxPolarAngle = Math.PI / 2.2; // Limit looking below horizon
+    this.orbitControls.minDistance = 8;
+    this.orbitControls.maxDistance = 40;
+    // Restrict to top-down view
+    this.orbitControls.minPolarAngle = Math.PI / 6;   // 30° - prevent too shallow
+    this.orbitControls.maxPolarAngle = Math.PI / 2.5; // 72° - maintain overhead view
+    this.orbitControls.enablePan = true; // Allow panning to move view
 
     // Raycaster for mouse picking
     this.raycaster = new THREE.Raycaster();
@@ -119,8 +123,9 @@ export class Scene3D {
       if (this.orbitControls) {
         this.orbitControls.enabled = false;
       }
-      console.log('VR session started');
-      this.updateModeInfo('VR');
+      console.log('VR session started - Bird\'s eye view mode');
+      console.log('Note: In VR, you\'ll be positioned high above the game board');
+      this.updateModeInfo('VR (Bird\'s Eye)');
     });
 
     this.renderer.xr.addEventListener('sessionend', () => {
@@ -129,7 +134,7 @@ export class Scene3D {
         this.orbitControls.enabled = true;
       }
       console.log('VR session ended');
-      this.updateModeInfo('Desktop 3D');
+      this.updateModeInfo('Desktop 3D (Top-Down)');
     });
   }
 
