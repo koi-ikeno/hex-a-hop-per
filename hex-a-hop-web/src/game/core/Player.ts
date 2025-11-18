@@ -51,7 +51,7 @@ export class Player {
   /**
    * Undo last move
    */
-  undo(level: Level): boolean {
+  undo(_level: Level): boolean {
     if (this.moveHistory.length <= 1) {
       return false; // Can't undo initial position
     }
@@ -71,8 +71,8 @@ export class Player {
   /**
    * Check if player is dead (standing on collapsed tile or empty space)
    */
-  isDead(level: Level): boolean {
-    return !level.canWalkOn(this.position);
+  isDead(_level: Level): boolean {
+    return !_level.canWalkOn(this.position);
   }
 
   /**

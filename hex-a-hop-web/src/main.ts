@@ -11,13 +11,14 @@ import { GameUI } from './game/ui/GameUI';
 import { ProgressManager } from './game/core/ProgressManager';
 import { LevelSelector } from './game/ui/LevelSelector';
 import { Direction } from './game/types/TileTypes';
+import { PerformanceMonitor } from './game/utils/PerformanceMonitor';
 
 /**
  * Hex-a-Hop Web Edition
- * Main entry point - Phase 5
+ * Main entry point - Phase 6: Performance Optimization
  */
 
-console.log('Hex-a-Hop Web - Initializing Phase 5...');
+console.log('Hex-a-Hop Web - Initializing Phase 6 (Performance)...');
 
 // Get canvas element
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -36,6 +37,7 @@ const gameUI = new GameUI();
 const touchControls = new TouchControls(canvas);
 const progressManager = new ProgressManager();
 const levelSelector = new LevelSelector(canvas, progressManager);
+const perfMonitor = new PerformanceMonitor();
 
 // Game state
 let isLoaded = false;
@@ -49,6 +51,7 @@ let moves = 0;
 let startTime = 0;
 let soundsLoaded = false;
 let currentLevelIndex = 0;
+let showPerformanceOverlay = false; // Toggle with 'P' key
 
 /**
  * Initialize game - load assets
@@ -65,14 +68,18 @@ async function init() {
     await renderer.waitForTextures();
 
     // Load sounds
-    console.log('Loading sounds...');
-    await soundManager.loadSound('collapse', '/assets/audio/sound-collapse.ogg');
-    await soundManager.loadSound('death', '/assets/audio/sound-death.ogg');
-    await soundManager.loadSound('win', '/assets/audio/sound-win.ogg');
-    await soundManager.loadSound('trampoline', '/assets/audio/sound-trampoline.ogg');
+    // Phase 6: Preload essential sounds, lazy load others for faster startup
+    console.log('Loading essential sounds...');
+    await soundManager.loadSound('collapse', '/assets/audio/sound-collapse.ogg', false);
+    await soundManager.loadSound('death', '/assets/audio/sound-death.ogg', false);
+    await soundManager.loadSound('win', '/assets/audio/sound-win.ogg', false);
+
+    // Register less-frequently used sounds for lazy loading
+    await soundManager.loadSound('trampoline', '/assets/audio/sound-trampoline.ogg', true);
 
     await soundManager.waitForSounds();
     soundsLoaded = true;
+    console.log(`Sounds loaded: ${soundManager.getLoadedCount()}/${soundManager.getRegisteredCount()}`);
 
     // Apply saved sound setting
     soundManager.setSoundEnabled(progressManager.isSoundEnabled());
@@ -104,6 +111,10 @@ async function init() {
         if (gameWon && currentLevelIndex < getTotalLevels() - 1) {
           loadLevel(currentLevelIndex + 1);
         }
+      } else if (e.key === 'p' || e.key === 'P') {
+        // Toggle performance overlay
+        showPerformanceOverlay = !showPerformanceOverlay;
+        console.log('Performance overlay:', showPerformanceOverlay ? 'ON' : 'OFF');
       }
     });
 
@@ -146,6 +157,12 @@ function loadLevel(levelIndex: number): void {
   // Hide level selector
   levelSelector.hide();
 
+  // Initialize level cache (large enough for entire level)
+  const cacheWidth = level.width * 100 + 200;
+  const cacheHeight = level.height * 100 + 200;
+  renderer.initLevelCache(cacheWidth, cacheHeight);
+  renderer.invalidateLevelCache();
+
   // Update camera
   updateCamera();
 
@@ -165,6 +182,9 @@ function handleMove(direction: Direction): void {
   const moved = player.move(direction, level);
   if (moved) {
     moves++;
+
+    // Invalidate level cache (tiles changed)
+    renderer.invalidateLevelCache();
 
     // Play step sound
     if (soundsLoaded && soundManager.isSoundEnabled()) {
@@ -248,15 +268,72 @@ function updateCamera(): void {
 /**
  * Update game state
  */
-function update(deltaTime: number) {
+function update(_deltaTime: number) {
   // Game logic updates here
   // For now, everything is event-driven from input
 }
 
 /**
+ * Render level tiles to offscreen cache
+ * Phase 6: Performance optimization
+ */
+function renderLevelToCache(): void {
+  const cacheCtx = renderer.getLevelCacheContext();
+  if (!cacheCtx || !level) return;
+
+  // Clear cache
+  cacheCtx.fillStyle = '#1a1a2e';
+  cacheCtx.fillRect(0, 0, cacheCtx.canvas.width, cacheCtx.canvas.height);
+
+  // Render all tiles to cache
+  for (let i = 0; i < level.height; i++) {
+    for (let j = 0; j < level.width; j++) {
+      const tile = level.tiles[i][j];
+      if (tile.type === 0) continue; // Skip empty tiles
+
+      const screenX = HexGrid.gridToScreenX(i, j);
+      const screenY = HexGrid.gridToScreenY(i, j);
+      const spriteRect = HexGrid.getTileSpriteRect(tile.type);
+
+      // Get texture
+      const textureName = 'tiles';
+      const texture = renderer.getTexture(textureName);
+      if (!texture) continue;
+
+      // Calculate position in cache (no scroll offset)
+      const dx = screenX - 64 / 2;
+      const dy = screenY - 64 + 18;
+
+      // Dim tiles that have collapsed
+      if (tile.strength <= 0 && tile.type >= 2 && tile.type <= 4) {
+        cacheCtx.globalAlpha = 0.3;
+      }
+
+      cacheCtx.drawImage(
+        texture,
+        spriteRect.x,
+        spriteRect.y,
+        spriteRect.w,
+        spriteRect.h,
+        dx,
+        dy,
+        spriteRect.w,
+        spriteRect.h
+      );
+
+      cacheCtx.globalAlpha = 1.0;
+    }
+  }
+}
+
+/**
  * Render the game
+ * Phase 6: Optimized rendering with offscreen cache
  */
 function render() {
+  // Update performance metrics
+  perfMonitor.update();
+
   // Clear screen
   renderer.clear('#1a1a2e');
 
@@ -278,32 +355,25 @@ function render() {
   // Render level selector if visible
   if (levelSelector.isVisible()) {
     levelSelector.render(ctx);
+
+    // Performance overlay even on level selector
+    if (showPerformanceOverlay) {
+      perfMonitor.renderOverlay(ctx, 10, 10);
+    }
     return;
   }
 
-  // Render level tiles (if level loaded)
+  // Render level (if loaded)
   if (level) {
-    for (let i = 0; i < level.height; i++) {
-      for (let j = 0; j < level.width; j++) {
-        const tile = level.tiles[i][j];
-        if (tile.type === 0) continue; // Skip empty tiles
-
-        const screenX = HexGrid.gridToScreenX(i, j);
-        const screenY = HexGrid.gridToScreenY(i, j);
-        const spriteRect = HexGrid.getTileSpriteRect(tile.type);
-
-        // Dim tiles that have collapsed
-        if (tile.strength <= 0 && tile.type >= 2 && tile.type <= 4) {
-          ctx.globalAlpha = 0.3;
-        }
-
-        renderer.renderTile(false, tile.type, screenX, screenY, spriteRect);
-
-        ctx.globalAlpha = 1.0;
-      }
+    // Update level cache if dirty
+    if (renderer.isLevelCacheDirty()) {
+      renderLevelToCache();
     }
 
-    // Render player
+    // Render cached level (with scroll offset)
+    renderer.renderLevelCache(-renderer.scrollX, -renderer.scrollY);
+
+    // Render player (dynamic element)
     const playerScreen = player.getScreenPosition();
 
     // Draw player as a bright hex
@@ -368,12 +438,17 @@ function render() {
     ctx.fillStyle = '#666666';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('L: Level Select | ESC: Menu', SCREEN_W / 2, SCREEN_H - 10);
+    ctx.fillText('L: Level Select | ESC: Menu | P: Performance', SCREEN_W / 2, SCREEN_H - 10);
   }
 
   // Render touch controls
   if (!levelSelector.isVisible()) {
     touchControls.render(ctx);
+  }
+
+  // Performance overlay (Phase 6)
+  if (showPerformanceOverlay) {
+    perfMonitor.renderOverlay(ctx, 10, 10);
   }
 }
 
@@ -384,9 +459,11 @@ const gameLoop = new GameLoop(update, render);
 init().then(() => {
   console.log('Starting game loop...');
   gameLoop.start();
-  console.log('Hex-a-Hop Web - Phase 5 Ready!');
+  console.log('Hex-a-Hop Web - Phase 6 Ready! (Performance Optimized)');
   console.log(`Total levels: ${getTotalLevels()}`);
   console.log('Sound:', soundsLoaded ? 'enabled' : 'disabled');
   console.log('Touch controls:', touchControls.isEnabled() ? 'enabled' : 'disabled');
   console.log('Progress:', progressManager.getCompletionPercentage(getTotalLevels()) + '%');
+  console.log('Performance: Press P to toggle FPS overlay');
+  console.log('Optimizations: Offscreen canvas caching enabled');
 });

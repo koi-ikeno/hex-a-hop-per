@@ -1,6 +1,7 @@
 /**
  * Renderer - Canvas 2D rendering engine
  * Ported from gfx.cpp
+ * Phase 6: Performance optimizations with offscreen canvas and dirty rectangles
  */
 
 import { GFX_SIZE, TILE_H1, Rect } from '../core/HexGrid';
@@ -14,6 +15,15 @@ export class Renderer {
   // Scroll offsets for camera movement
   public scrollX: number = 0;
   public scrollY: number = 0;
+
+  // Offscreen canvas for level caching
+  private levelCache: HTMLCanvasElement | null = null;
+  private levelCacheCtx: CanvasRenderingContext2D | null = null;
+  private levelCacheDirty: boolean = true;
+
+  // Dirty rectangles for partial rendering
+  private dirtyRegions: Rect[] = [];
+  private useDirtyRectangles: boolean = true;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -110,7 +120,7 @@ export class Renderer {
    */
   renderTile(
     reflect: boolean,
-    tileIndex: number,
+    _tileIndex: number,
     x: number,
     y: number,
     spriteRect: Rect
@@ -196,5 +206,123 @@ export class Renderer {
       width: this.canvas.width,
       height: this.canvas.height,
     };
+  }
+
+  /**
+   * Initialize offscreen canvas for level caching
+   * Phase 6: Performance optimization
+   */
+  initLevelCache(width: number, height: number): void {
+    if (!this.levelCache) {
+      this.levelCache = document.createElement('canvas');
+      this.levelCache.width = width;
+      this.levelCache.height = height;
+      const ctx = this.levelCache.getContext('2d');
+      if (!ctx) {
+        throw new Error('Could not create offscreen canvas context');
+      }
+      this.levelCacheCtx = ctx;
+      this.levelCacheCtx.imageSmoothingEnabled = false;
+      console.log(`Offscreen canvas initialized: ${width}x${height}`);
+    }
+  }
+
+  /**
+   * Mark the level cache as dirty (needs redraw)
+   */
+  invalidateLevelCache(): void {
+    this.levelCacheDirty = true;
+  }
+
+  /**
+   * Check if level cache needs updating
+   */
+  isLevelCacheDirty(): boolean {
+    return this.levelCacheDirty;
+  }
+
+  /**
+   * Get level cache context for drawing
+   */
+  getLevelCacheContext(): CanvasRenderingContext2D | null {
+    return this.levelCacheCtx;
+  }
+
+  /**
+   * Render the cached level to the main canvas
+   */
+  renderLevelCache(offsetX: number = 0, offsetY: number = 0): void {
+    if (!this.levelCache || !this.levelCacheCtx) return;
+
+    this.ctx.drawImage(this.levelCache, offsetX, offsetY);
+    this.levelCacheDirty = false;
+  }
+
+  /**
+   * Mark a region as dirty (needs redraw)
+   * Phase 6: Dirty rectangle optimization
+   */
+  markDirty(x: number, y: number, w: number, h: number): void {
+    if (!this.useDirtyRectangles) return;
+
+    // Expand slightly to avoid edge artifacts
+    const margin = 2;
+    this.dirtyRegions.push({
+      x: Math.floor(x - margin),
+      y: Math.floor(y - margin),
+      w: Math.ceil(w + margin * 2),
+      h: Math.ceil(h + margin * 2),
+    });
+  }
+
+  /**
+   * Clear all dirty regions
+   */
+  clearDirtyRegions(): void {
+    this.dirtyRegions = [];
+  }
+
+  /**
+   * Get all dirty regions
+   */
+  getDirtyRegions(): Rect[] {
+    return this.dirtyRegions;
+  }
+
+  /**
+   * Check if dirty rectangle optimization is enabled
+   */
+  isDirtyRectanglesEnabled(): boolean {
+    return this.useDirtyRectangles;
+  }
+
+  /**
+   * Enable/disable dirty rectangle optimization
+   */
+  setDirtyRectanglesEnabled(enabled: boolean): void {
+    this.useDirtyRectangles = enabled;
+    console.log(`Dirty rectangles: ${enabled ? 'enabled' : 'disabled'}`);
+  }
+
+  /**
+   * Clear specific region
+   */
+  clearRegion(x: number, y: number, w: number, h: number, color: string = '#1a1a2e'): void {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, w, h);
+  }
+
+  /**
+   * Save current context state
+   */
+  save(): void {
+    this.ctx.save();
+  }
+
+  /**
+   * Restore context state
+   */
+  restore(): void {
+    this.ctx.restore();
   }
 }

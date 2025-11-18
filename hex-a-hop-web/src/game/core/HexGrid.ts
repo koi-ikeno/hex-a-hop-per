@@ -77,7 +77,7 @@ export class HexGrid {
    * Convert grid coordinates to screen Y position
    * Based on getScreenY() in hex_puzzzle.cpp
    */
-  static gridToScreenY(gridX: number, gridY: number): number {
+  static gridToScreenY(_gridX: number, gridY: number): number {
     return gridY * TILE_WL;
   }
 
@@ -116,7 +116,7 @@ export class HexGrid {
    * Get sprite sheet source rectangle for a tile
    * Based on MakeTileInfo() in hex_puzzzle.cpp line 323
    */
-  static getTileSpriteRect(tileIndex: number): Rect {
+  static getTileSpriteRect(tileIndex: number, _gridX: number = 0, _gridY: number = 0): Rect {
     return {
       x: (tileIndex % SPRITE_COLS) * GFX_SIZE,
       y: Math.floor(tileIndex / SPRITE_COLS) * GFX_SIZE,
