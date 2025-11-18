@@ -52,7 +52,7 @@ hex-a-hop-web/
 - [x] Basic TypeScript configuration
 - [x] Canvas setup with test pattern
 
-### Phase 2: Rendering Foundation ✅ (Current)
+### Phase 2: Rendering Foundation ✅
 - [x] Type definitions from C++ headers (TileTypes, constants)
 - [x] Renderer class with sprite sheet support
 - [x] Game loop with fixed timestep
@@ -61,11 +61,15 @@ hex-a-hop-web/
 - [x] Tile rendering from sprite sheets
 - [x] Test pattern with 13 different tile types
 
-### Phase 3: Core Game Logic (Planned)
-- [ ] Level data loader
-- [ ] Tile system
-- [ ] Player movement
-- [ ] Game mechanics (collapse, flags, win conditions)
+### Phase 3: Core Game Logic ✅ (Current - PLAYABLE!)
+- [x] Level class with tile grid management
+- [x] Player class with hex movement logic
+- [x] Input handling (keyboard: QWEASDZXC, Arrow keys)
+- [x] Tile collapse mechanics
+- [x] Win/loss conditions
+- [x] Camera following player
+- [x] Playable test level with collapsable tiles
+- [x] Move counter and stats display
 
 ### Phase 4: Audio & UI (Planned)
 - [ ] Sound manager (Web Audio API)
