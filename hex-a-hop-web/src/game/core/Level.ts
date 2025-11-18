@@ -154,13 +154,242 @@ export class Level {
 }
 
 /**
- * Create a simple test level
+ * Level collection - multiple test levels
  */
-export function createTestLevel(): LevelData {
+export const LEVELS: LevelData[] = [];
+
+/**
+ * Create a simple hex pattern level (Tutorial)
+ */
+function createLevel1(): LevelData {
   const width = 15;
   const height = 15;
+  const tiles: TileData[][] = createEmptyGrid(width, height);
 
-  // Initialize empty grid
+  const patterns = [
+    // Center cluster
+    { x: 7, y: 7, type: TileType.NORMAL, strength: 1 },
+
+    // Ring 1 - collapsable tiles
+    { x: 8, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+  ];
+
+  patterns.forEach(({ x, y, type, strength }) => {
+    tiles[x][y] = { type, strength, item: 0, flags: 0 };
+  });
+
+  return {
+    name: 'Level 1: First Steps',
+    width,
+    height,
+    playerStartX: 7,
+    playerStartY: 7,
+    tiles,
+  };
+}
+
+/**
+ * Create a path-based level
+ */
+function createLevel2(): LevelData {
+  const width = 15;
+  const height = 15;
+  const tiles: TileData[][] = createEmptyGrid(width, height);
+
+  const patterns = [
+    // Starting platform
+    { x: 5, y: 5, type: TileType.NORMAL, strength: 1 },
+
+    // Path with collapsable tiles
+    { x: 6, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Ending platform
+    { x: 9, y: 8, type: TileType.NORMAL, strength: 1 },
+
+    // Some walls
+    { x: 7, y: 6, type: TileType.WALL, strength: 1 },
+  ];
+
+  patterns.forEach(({ x, y, type, strength }) => {
+    tiles[x][y] = { type, strength, item: 0, flags: 0 };
+  });
+
+  return {
+    name: 'Level 2: The Path',
+    width,
+    height,
+    playerStartX: 5,
+    playerStartY: 5,
+    tiles,
+  };
+}
+
+/**
+ * Create a more challenging level with 2-hit tiles
+ */
+function createLevel3(): LevelData {
+  const width = 15;
+  const height = 15;
+  const tiles: TileData[][] = createEmptyGrid(width, height);
+
+  const patterns = [
+    // Center hub
+    { x: 7, y: 7, type: TileType.NORMAL, strength: 1 },
+
+    // Branch 1 (requires backtracking)
+    { x: 8, y: 7, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 9, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Branch 2
+    { x: 7, y: 8, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 7, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Branch 3
+    { x: 6, y: 7, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 5, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Branch 4
+    { x: 7, y: 6, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 7, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Branch 5
+    { x: 8, y: 6, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 9, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // Branch 6
+    { x: 6, y: 8, type: TileType.COLLAPSABLE2, strength: 2 },
+    { x: 5, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+  ];
+
+  patterns.forEach(({ x, y, type, strength }) => {
+    tiles[x][y] = { type, strength, item: 0, flags: 0 };
+  });
+
+  return {
+    name: 'Level 3: Double Trouble',
+    width,
+    height,
+    playerStartX: 7,
+    playerStartY: 7,
+    tiles,
+  };
+}
+
+/**
+ * Create a spiral level
+ */
+function createLevel4(): LevelData {
+  const width = 15;
+  const height = 15;
+  const tiles: TileData[][] = createEmptyGrid(width, height);
+
+  const patterns = [
+    // Spiral pattern
+    { x: 7, y: 7, type: TileType.NORMAL, strength: 1 },
+    { x: 8, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 5, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 5, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+  ];
+
+  patterns.forEach(({ x, y, type, strength }) => {
+    tiles[x][y] = { type, strength, item: 0, flags: 0 };
+  });
+
+  return {
+    name: 'Level 4: Spiral',
+    width,
+    height,
+    playerStartX: 7,
+    playerStartY: 7,
+    tiles,
+  };
+}
+
+/**
+ * Create a maze-like level with walls
+ */
+function createLevel5(): LevelData {
+  const width = 15;
+  const height = 15;
+  const tiles: TileData[][] = createEmptyGrid(width, height);
+
+  const patterns = [
+    // Start
+    { x: 5, y: 5, type: TileType.NORMAL, strength: 1 },
+
+    // Maze path
+    { x: 6, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 9, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 8, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 7, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
+    { x: 6, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
+
+    // End
+    { x: 6, y: 6, type: TileType.NORMAL, strength: 1 },
+
+    // Walls to create maze
+    { x: 8, y: 5, type: TileType.WALL, strength: 1 },
+    { x: 8, y: 6, type: TileType.WALL, strength: 1 },
+    { x: 8, y: 8, type: TileType.WALL, strength: 1 },
+    { x: 7, y: 8, type: TileType.WALL, strength: 1 },
+    { x: 10, y: 7, type: TileType.WALL, strength: 1 },
+    { x: 10, y: 8, type: TileType.WALL, strength: 1 },
+  ];
+
+  patterns.forEach(({ x, y, type, strength }) => {
+    tiles[x][y] = { type, strength, item: 0, flags: 0 };
+  });
+
+  return {
+    name: 'Level 5: Maze Runner',
+    width,
+    height,
+    playerStartX: 5,
+    playerStartY: 5,
+    tiles,
+  };
+}
+
+/**
+ * Helper: Create empty grid
+ */
+function createEmptyGrid(width: number, height: number): TileData[][] {
   const tiles: TileData[][] = [];
   for (let i = 0; i < height; i++) {
     tiles[i] = [];
@@ -173,49 +402,36 @@ export function createTestLevel(): LevelData {
       };
     }
   }
+  return tiles;
+}
 
-  // Create a simple hex pattern level
-  // Center area with collapsable tiles
-  const patterns = [
-    // Center cluster
-    { x: 7, y: 7, type: TileType.NORMAL, strength: 1 },
+// Initialize level collection
+LEVELS.push(createLevel1());
+LEVELS.push(createLevel2());
+LEVELS.push(createLevel3());
+LEVELS.push(createLevel4());
+LEVELS.push(createLevel5());
 
-    // Ring 1 - collapsable tiles
-    { x: 8, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 7, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 6, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 6, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 7, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 8, y: 6, type: TileType.COLLAPSABLE, strength: 1 },
+/**
+ * Get level by index
+ */
+export function getLevel(index: number): LevelData | null {
+  if (index < 0 || index >= LEVELS.length) {
+    return null;
+  }
+  return LEVELS[index];
+}
 
-    // Ring 2 - mix of tiles
-    { x: 9, y: 7, type: TileType.NORMAL, strength: 1 },
-    { x: 8, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 5, y: 9, type: TileType.NORMAL, strength: 1 },
-    { x: 5, y: 7, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 7, y: 5, type: TileType.NORMAL, strength: 1 },
-    { x: 9, y: 5, type: TileType.COLLAPSABLE, strength: 1 },
+/**
+ * Get total number of levels
+ */
+export function getTotalLevels(): number {
+  return LEVELS.length;
+}
 
-    // Some walls
-    { x: 10, y: 7, type: TileType.WALL, strength: 1 },
-    { x: 4, y: 7, type: TileType.WALL, strength: 1 },
-
-    // Path to victory
-    { x: 9, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 10, y: 8, type: TileType.COLLAPSABLE, strength: 1 },
-    { x: 10, y: 9, type: TileType.COLLAPSABLE, strength: 1 },
-  ];
-
-  patterns.forEach(({ x, y, type, strength }) => {
-    tiles[x][y] = { type, strength, item: 0, flags: 0 };
-  });
-
-  return {
-    name: 'Test Level - Hex Pattern',
-    width,
-    height,
-    playerStartX: 7,
-    playerStartY: 7,
-    tiles,
-  };
+/**
+ * Legacy function for backward compatibility
+ */
+export function createTestLevel(): LevelData {
+  return LEVELS[0];
 }

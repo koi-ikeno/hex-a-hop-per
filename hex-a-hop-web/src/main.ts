@@ -2,20 +2,22 @@ import './style.css';
 import { Renderer } from './game/graphics/Renderer';
 import { GameLoop } from './game/core/GameLoop';
 import { HexGrid, SCREEN_W, SCREEN_H } from './game/core/HexGrid';
-import { Level, createTestLevel } from './game/core/Level';
+import { Level, getLevel, getTotalLevels, LevelData } from './game/core/Level';
 import { Player } from './game/core/Player';
 import { InputHandler } from './game/core/InputHandler';
 import { SoundManager } from './game/audio/SoundManager';
 import { TouchControls } from './game/ui/TouchControls';
 import { GameUI } from './game/ui/GameUI';
+import { ProgressManager } from './game/core/ProgressManager';
+import { LevelSelector } from './game/ui/LevelSelector';
 import { Direction } from './game/types/TileTypes';
 
 /**
  * Hex-a-Hop Web Edition
- * Main entry point - Phase 4
+ * Main entry point - Phase 5
  */
 
-console.log('Hex-a-Hop Web - Initializing Phase 4...');
+console.log('Hex-a-Hop Web - Initializing Phase 5...');
 
 // Get canvas element
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -32,17 +34,21 @@ const renderer = new Renderer(canvas);
 const soundManager = new SoundManager();
 const gameUI = new GameUI();
 const touchControls = new TouchControls(canvas);
+const progressManager = new ProgressManager();
+const levelSelector = new LevelSelector(canvas, progressManager);
 
 // Game state
 let isLoaded = false;
 let level: Level;
-let levelData = createTestLevel();
+let levelData: LevelData | null = null;
 let player: Player;
 let inputHandler: InputHandler;
 let gameWon = false;
 let gameLost = false;
 let moves = 0;
+let startTime = 0;
 let soundsLoaded = false;
+let currentLevelIndex = 0;
 
 /**
  * Initialize game - load assets
@@ -68,11 +74,10 @@ async function init() {
     await soundManager.waitForSounds();
     soundsLoaded = true;
 
-    console.log('Assets loaded successfully!');
+    // Apply saved sound setting
+    soundManager.setSoundEnabled(progressManager.isSoundEnabled());
 
-    // Create level and player
-    level = new Level(levelData);
-    player = new Player(level.playerStart);
+    console.log('Assets loaded successfully!');
 
     // Setup input handling
     inputHandler = new InputHandler();
@@ -85,8 +90,22 @@ async function init() {
     touchControls.setUndoCallback(handleUndo);
     touchControls.setResetCallback(handleReset);
 
-    // Center camera on player
-    updateCamera();
+    // Setup level selector
+    levelSelector.setSelectCallback(loadLevel);
+
+    // Setup keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        levelSelector.toggle();
+      } else if (e.key === 'l' || e.key === 'L') {
+        levelSelector.show();
+      } else if (e.key === 'n' || e.key === 'N') {
+        // Next level
+        if (gameWon && currentLevelIndex < getTotalLevels() - 1) {
+          loadLevel(currentLevelIndex + 1);
+        }
+      }
+    });
 
     // Enable audio context on first user interaction
     canvas.addEventListener('click', () => {
@@ -94,39 +113,90 @@ async function init() {
     }, { once: true });
 
     isLoaded = true;
+
+    // Load the last played level or first level
+    const startLevel = progressManager.getCurrentLevel();
+    loadLevel(Math.min(startLevel, getTotalLevels() - 1));
+
+    // Show level selector initially
+    levelSelector.show();
   } catch (error) {
     console.error('Failed to load assets:', error);
   }
 }
 
 /**
+ * Load a level
+ */
+function loadLevel(levelIndex: number): void {
+  levelData = getLevel(levelIndex);
+  if (!levelData) {
+    console.error('Level not found:', levelIndex);
+    return;
+  }
+
+  currentLevelIndex = levelIndex;
+  level = new Level(levelData);
+  player = new Player(level.playerStart);
+  gameWon = false;
+  gameLost = false;
+  moves = 0;
+  startTime = Date.now();
+
+  // Hide level selector
+  levelSelector.hide();
+
+  // Update camera
+  updateCamera();
+
+  // Record attempt
+  progressManager.recordAttempt(levelIndex);
+
+  console.log(`Level ${levelIndex + 1} loaded:`, level.name);
+}
+
+/**
  * Handle player movement
  */
 function handleMove(direction: Direction): void {
-  if (gameWon || gameLost) return;
+  if (gameWon || gameLost || !levelData) return;
+  if (levelSelector.isVisible()) return;
 
   const moved = player.move(direction, level);
   if (moved) {
     moves++;
 
     // Play step sound
-    if (soundsLoaded) {
+    if (soundsLoaded && soundManager.isSoundEnabled()) {
       soundManager.playSound('collapse', 0.3);
     }
 
     // Check win condition
     if (level.isComplete()) {
       gameWon = true;
-      if (soundsLoaded) {
+      const time = Math.floor((Date.now() - startTime) / 1000);
+
+      // Save progress
+      progressManager.completeLevel(
+        currentLevelIndex,
+        moves,
+        time,
+        level.totalGreenTiles
+      );
+
+      if (soundsLoaded && soundManager.isSoundEnabled()) {
         soundManager.playSound('win');
       }
-      console.log(`Victory! Completed in ${moves} moves!`);
+
+      const levelProgress = progressManager.getLevelProgress(currentLevelIndex);
+      console.log(`Victory! Completed in ${moves} moves, ${time}s`);
+      console.log(`Stars: ${levelProgress?.stars || 0}`);
     }
 
     // Check death
     if (player.isDead(level)) {
       gameLost = true;
-      if (soundsLoaded) {
+      if (soundsLoaded && soundManager.isSoundEnabled()) {
         soundManager.playSound('death');
       }
       console.log('Game over - fell through!');
@@ -140,10 +210,10 @@ function handleMove(direction: Direction): void {
  * Handle undo
  */
 function handleUndo(): void {
-  if (gameWon || gameLost) return;
+  if (gameWon || gameLost || !levelData) return;
+  if (levelSelector.isVisible()) return;
 
   // For now, just reset the level instead of proper undo
-  // (Proper undo would require storing full game state history)
   handleReset();
 }
 
@@ -151,11 +221,15 @@ function handleUndo(): void {
  * Handle reset
  */
 function handleReset(): void {
+  if (!levelData) return;
+  if (levelSelector.isVisible()) return;
+
   level.reset(levelData);
   player.reset(level.playerStart);
   gameWon = false;
   gameLost = false;
   moves = 0;
+  startTime = Date.now();
   updateCamera();
   console.log('Level reset');
 }
@@ -201,67 +275,106 @@ function render() {
 
   const ctx = renderer.getContext();
 
-  // Render level tiles
-  for (let i = 0; i < level.height; i++) {
-    for (let j = 0; j < level.width; j++) {
-      const tile = level.tiles[i][j];
-      if (tile.type === 0) continue; // Skip empty tiles
+  // Render level selector if visible
+  if (levelSelector.isVisible()) {
+    levelSelector.render(ctx);
+    return;
+  }
 
-      const screenX = HexGrid.gridToScreenX(i, j);
-      const screenY = HexGrid.gridToScreenY(i, j);
-      const spriteRect = HexGrid.getTileSpriteRect(tile.type);
+  // Render level tiles (if level loaded)
+  if (level) {
+    for (let i = 0; i < level.height; i++) {
+      for (let j = 0; j < level.width; j++) {
+        const tile = level.tiles[i][j];
+        if (tile.type === 0) continue; // Skip empty tiles
 
-      // Dim tiles that have collapsed
-      if (tile.strength <= 0 && tile.type >= 2 && tile.type <= 4) {
-        ctx.globalAlpha = 0.3;
+        const screenX = HexGrid.gridToScreenX(i, j);
+        const screenY = HexGrid.gridToScreenY(i, j);
+        const spriteRect = HexGrid.getTileSpriteRect(tile.type);
+
+        // Dim tiles that have collapsed
+        if (tile.strength <= 0 && tile.type >= 2 && tile.type <= 4) {
+          ctx.globalAlpha = 0.3;
+        }
+
+        renderer.renderTile(false, tile.type, screenX, screenY, spriteRect);
+
+        ctx.globalAlpha = 1.0;
       }
-
-      renderer.renderTile(false, tile.type, screenX, screenY, spriteRect);
-
-      ctx.globalAlpha = 1.0;
     }
+
+    // Render player
+    const playerScreen = player.getScreenPosition();
+
+    // Draw player as a bright hex
+    ctx.fillStyle = gameLost ? '#ff0000' : gameWon ? '#00ff00' : '#ffff00';
+    ctx.beginPath();
+    const px = playerScreen.x - renderer.scrollX;
+    const py = playerScreen.y - renderer.scrollY;
+
+    // Simple hexagon
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i;
+      const x = px + Math.cos(angle) * 12;
+      const y = py + Math.sin(angle) * 12;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
   }
-
-  // Render player (using a simple colored hex)
-  const playerScreen = player.getScreenPosition();
-
-  // Draw player as a bright hex
-  ctx.fillStyle = gameLost ? '#ff0000' : gameWon ? '#00ff00' : '#ffff00';
-  ctx.beginPath();
-  const px = playerScreen.x - renderer.scrollX;
-  const py = playerScreen.y - renderer.scrollY;
-
-  // Simple hexagon
-  for (let i = 0; i < 6; i++) {
-    const angle = (Math.PI / 3) * i;
-    const x = px + Math.cos(angle) * 12;
-    const y = py + Math.sin(angle) * 12;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  ctx.closePath();
-  ctx.fill();
 
   // Render UI
-  gameUI.renderStats(ctx, {
-    levelName: level.name,
-    moves,
-    tilesRemaining: level.greenTilesRemaining,
-    totalTiles: level.totalGreenTiles,
-  });
+  if (level) {
+    gameUI.renderStats(ctx, {
+      levelName: `${currentLevelIndex + 1}/${getTotalLevels()}: ${level.name}`,
+      moves,
+      tilesRemaining: level.greenTilesRemaining,
+      totalTiles: level.totalGreenTiles,
+    });
 
-  // Render game status overlays
-  if (gameWon) {
-    gameUI.renderVictory(ctx, moves);
-  } else if (gameLost) {
-    gameUI.renderGameOver(ctx);
+    // Show stars on victory
+    if (gameWon) {
+      const levelProgress = progressManager.getLevelProgress(currentLevelIndex);
+      gameUI.renderVictory(ctx, moves);
+
+      // Show stars
+      if (levelProgress) {
+        ctx.fillStyle = '#ffdd00';
+        ctx.font = '32px Arial';
+        ctx.textAlign = 'center';
+        const stars = '★'.repeat(levelProgress.stars);
+        ctx.fillText(stars, SCREEN_W / 2, SCREEN_H / 2 + 60);
+      }
+
+      // Next level prompt
+      if (currentLevelIndex < getTotalLevels() - 1) {
+        ctx.fillStyle = '#aaaaaa';
+        ctx.font = '16px Arial';
+        ctx.fillText(
+          'Press N for next level | L for level select',
+          SCREEN_W / 2,
+          SCREEN_H / 2 + 100
+        );
+      }
+    } else if (gameLost) {
+      gameUI.renderGameOver(ctx);
+    }
+
+    // Render controls help
+    gameUI.renderControls(ctx, SCREEN_H - 30, touchControls.isEnabled());
+
+    // Additional help
+    ctx.fillStyle = '#666666';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('L: Level Select | ESC: Menu', SCREEN_W / 2, SCREEN_H - 10);
   }
 
-  // Render controls help
-  gameUI.renderControls(ctx, SCREEN_H - 10, touchControls.isEnabled());
-
   // Render touch controls
-  touchControls.render(ctx);
+  if (!levelSelector.isVisible()) {
+    touchControls.render(ctx);
+  }
 }
 
 // Create game loop
@@ -271,9 +384,9 @@ const gameLoop = new GameLoop(update, render);
 init().then(() => {
   console.log('Starting game loop...');
   gameLoop.start();
-  console.log('Hex-a-Hop Web - Phase 4 Ready!');
-  console.log('Level:', level.name);
-  console.log('Objective: Step on all green tiles to win!');
+  console.log('Hex-a-Hop Web - Phase 5 Ready!');
+  console.log(`Total levels: ${getTotalLevels()}`);
   console.log('Sound:', soundsLoaded ? 'enabled' : 'disabled');
   console.log('Touch controls:', touchControls.isEnabled() ? 'enabled' : 'disabled');
+  console.log('Progress:', progressManager.getCompletionPercentage(getTotalLevels()) + '%');
 });
