@@ -1,0 +1,21 @@
+{
+  "name": "hex-a-hop-webxr",
+  "version": "0.1.0",
+  "description": "Hex-a-Hop WebXR Edition - 3D/VR puzzle game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "dev:https": "vite --host --https",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.160.0",
+    "cannon-es": "^0.20.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  }
+}
